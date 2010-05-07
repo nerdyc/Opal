@@ -10,6 +10,8 @@
 #import "OpalMutableBitSet.h"
 #import "RegexKitLite.h"
 
+// ===== CONSTANTS =====================================================================================================
+
 NSString *OpalStartTagBeginToken = @"<";
 NSString *OpalEndTagBeginToken = @"</";
 NSString *OpalTagEndToken = @">";
@@ -27,8 +29,8 @@ NSCharacterSet *OpalXMLSymbolCharacterSet = nil;
 @implementation OpalXMLScanner
 
 #pragma mark Initialization
-
 // ===== INITIALIZATION ================================================================================================
+
 +(void)initialize
 {
 	OpalXMLNamePattern = [[NSString alloc] initWithFormat:@"^%@%@*", OpalXMLNameStartCharsPattern, OpalXMLNameCharsPattern, nil];
@@ -75,12 +77,14 @@ NSCharacterSet *OpalXMLSymbolCharacterSet = nil;
 	return [self remainingChars] == 0;
 }
 
-- (BOOL)isAtString:(NSString *)matchString
+- (NSString *)xmlString
 {
-	NSUInteger currLocation = [scanner scanLocation];
-	BOOL result = [scanner scanString:matchString intoString:NULL];
-	[scanner setScanLocation:currLocation];
-	return result;
+	return [scanner string];
+}
+
+- (NSRange)scanRange
+{
+	return NSMakeRange([self scanLocation], [self remainingChars]);
 }
 
 #pragma mark Start Tag
@@ -95,6 +99,9 @@ NSCharacterSet *OpalXMLSymbolCharacterSet = nil;
 {
 	return [scanner scanString:OpalStartTagBeginToken intoString:NULL];
 }
+
+#pragma mark End Tag
+// ===== START TAG =====================================================================================================
 
 - (BOOL)isAtEndTag
 {
@@ -111,64 +118,12 @@ NSCharacterSet *OpalXMLSymbolCharacterSet = nil;
 	return [scanner scanString:OpalTagEndToken intoString:NULL];
 }
 
+#pragma mark References
+// ===== REFERENCES ====================================================================================================
+
 - (BOOL)isAtReference
 {
 	return ([self isAtCharacterReference] || [self isAtEntityReference]);
-}
-
-- (BOOL)isAtCharacterReference
-{
-	return([self isAtHexCharacterReference] || [self isAtDecimalCharacterReference]);
-}
-
-- (BOOL)isAtHexCharacterReference
-{
-	return [[self xmlString] isMatchedByRegex:OpalXMLHexCharacterReferencePattern inRange:[self scanRange]];
-}
-
-- (BOOL)isAtDecimalCharacterReference
-{
-	return [[self xmlString] isMatchedByRegex:OpalXMLDecimalCharacterReferencePattern inRange:[self scanRange]];
-}
-
-- (BOOL)isAtEntityReference
-{
-	return [[self xmlString] isMatchedByRegex:OpalXMLEntityReferencePattern inRange:[self scanRange]];
-}
-
-- (NSString *)xmlString
-{
-	return [scanner string];
-}
-
-- (NSRange)scanRange
-{
-	return NSMakeRange([self scanLocation], [self remainingChars]);
-}
-
-- (NSString *)scanTagName
-{
-	return [self scanRegex:OpalXMLNamePattern];
-}
-
-- (NSString *)scanCharacterData
-{
-	NSMutableString *scannedText = [[NSMutableString alloc] initWithString:@""];
-	while (![self isAtEnd] && ![self isAtStartTag] && ![self isAtEndTag]) {
-		NSString *text = [self scanReference];
-		if (text == nil) {
-			[scanner scanUpToCharactersFromSet:OpalXMLSymbolCharacterSet intoString:&scannedText];
-		}
-		
-		// append the result
-		if (text == nil || [text isEqualToString:@""]) {
-			break;
-		} else {
-			[scannedText appendString:text];
-		}
-	}
-	
-	return [scannedText autorelease];
 }
 
 - (NSString *)scanReference
@@ -180,11 +135,12 @@ NSCharacterSet *OpalXMLSymbolCharacterSet = nil;
 	return refValue;
 }
 
-- (NSString *)scanEntityReference
+#pragma mark Character References
+// ----- CHARACTER REFERENCES ------------------------------------------------------------------------------------------
+
+- (BOOL)isAtCharacterReference
 {
-	NSString *entityRef = [self scanRegex:OpalXMLEntityReferencePattern capture:1];
-	NSString *value = [OpalXMLDefaultEntities objectForKey:entityRef];
-	return value;
+	return([self isAtHexCharacterReference] || [self isAtDecimalCharacterReference]);
 }
 
 - (NSString *)scanCharacterReference
@@ -194,6 +150,12 @@ NSCharacterSet *OpalXMLSymbolCharacterSet = nil;
 		charRef = [self scanDecimalCharacterReference];
 	}
 	return charRef;
+}
+
+
+- (BOOL)isAtHexCharacterReference
+{
+	return [[self xmlString] isMatchedByRegex:OpalXMLHexCharacterReferencePattern inRange:[self scanRange]];
 }
 
 - (NSString *)scanHexCharacterReference
@@ -211,6 +173,11 @@ NSCharacterSet *OpalXMLSymbolCharacterSet = nil;
 	} else {
 		return nil;
 	}
+}
+
+- (BOOL)isAtDecimalCharacterReference
+{
+	return [[self xmlString] isMatchedByRegex:OpalXMLDecimalCharacterReferencePattern inRange:[self scanRange]];
 }
 
 - (NSString *)scanDecimalCharacterReference
@@ -233,6 +200,60 @@ NSCharacterSet *OpalXMLSymbolCharacterSet = nil;
 		return nil;
 	}	
 	return nil;
+}
+
+#pragma mark Entity References
+// ----- ENTITY REFERENCES ---------------------------------------------------------------------------------------------
+
+- (BOOL)isAtEntityReference
+{
+	return [[self xmlString] isMatchedByRegex:OpalXMLEntityReferencePattern inRange:[self scanRange]];
+}
+
+- (NSString *)scanEntityReference
+{
+	NSString *entityRef = [self scanRegex:OpalXMLEntityReferencePattern capture:1];
+	NSString *value = [OpalXMLDefaultEntities objectForKey:entityRef];
+	return value;
+}
+
+#pragma mark Character Data
+// ===== CHARACTER DATA ================================================================================================
+
+- (NSString *)scanCharacterData
+{
+	NSMutableString *scannedText = [[NSMutableString alloc] initWithString:@""];
+	while (![self isAtEnd] && ![self isAtStartTag] && ![self isAtEndTag]) {
+		NSString *text = [self scanReference];
+		if (text == nil) {
+			[scanner scanUpToCharactersFromSet:OpalXMLSymbolCharacterSet intoString:&scannedText];
+		}
+		
+		// append the result
+		if (text == nil || [text isEqualToString:@""]) {
+			break;
+		} else {
+			[scannedText appendString:text];
+		}
+	}
+	
+	return [scannedText autorelease];
+}
+
+#pragma mark Scan Helpers
+// ===== SCAN HELPERS ==================================================================================================
+
+- (BOOL)isAtString:(NSString *)matchString
+{
+	NSUInteger currLocation = [scanner scanLocation];
+	BOOL result = [scanner scanString:matchString intoString:NULL];
+	[scanner setScanLocation:currLocation];
+	return result;
+}
+
+- (NSString *)scanTagName
+{
+	return [self scanRegex:OpalXMLNamePattern];
 }
 
 + (NSString *)stringFromUnicodeCharacter:(UInt32)unicodeCharacter
