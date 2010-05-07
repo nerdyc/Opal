@@ -1,0 +1,9 @@
+<?xml version='1.0'?>
+<!DOCTYPE signatures SYSTEM "file://localhost/System/Library/DTDs/BridgeSupport.dtd">
+<signatures version='0.9'>
+<enum name='OPAL_END_DOCUMENT' value='2'/>
+<enum name='OPAL_END_TAG' value='4'/>
+<enum name='OPAL_START_DOCUMENT' value='1'/>
+<enum name='OPAL_START_TAG' value='3'/>
+<enum name='OPAL_TEXT' value='5'/>
+</signatures>
