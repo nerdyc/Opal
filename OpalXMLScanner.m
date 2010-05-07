@@ -26,6 +26,10 @@ NSString *OpalXMLEntityReferencePattern = nil;
 NSDictionary *OpalXMLDefaultEntities = nil;
 NSCharacterSet *OpalXMLSymbolCharacterSet = nil;
 
+NSString *OpalCommentBeginToken = @"<!--";
+NSString *OpalCommentEndToken = @"-->";
+NSString *OpalXMLCommentPattern = @"<!--([\\x09\\x0A\\x0D\\x20-\\x{D7FF}\\x{E000}-\\x{FFFD}\\U00010000-\\U0010FFFF]*?)-->";
+
 @implementation OpalXMLScanner
 
 #pragma mark Initialization
@@ -112,6 +116,12 @@ NSCharacterSet *OpalXMLSymbolCharacterSet = nil;
 {
 	return [scanner scanString:OpalEndTagBeginToken intoString:NULL];
 }
+
+- (NSString *)scanTagName
+{
+	return [self scanRegex:OpalXMLNamePattern];
+}
+
 
 - (BOOL)scanTagEndToken
 {
@@ -202,6 +212,21 @@ NSCharacterSet *OpalXMLSymbolCharacterSet = nil;
 	return nil;
 }
 
++ (NSString *)stringFromUnicodeCharacter:(UInt32)unicodeCharacter
+{
+	UInt32 stringBuffer[] = { unicodeCharacter };
+	NSData* stringData = [NSData dataWithBytes:stringBuffer length:sizeof(UInt32)];
+	
+	NSStringEncoding encoding;
+	if (CFByteOrderGetCurrent() == CFByteOrderBigEndian) {
+		encoding = NSUTF32BigEndianStringEncoding;
+	} else {
+		encoding = NSUTF32LittleEndianStringEncoding;
+	}
+	
+	return [[[NSString alloc] initWithData:stringData encoding:encoding] autorelease];
+}
+
 #pragma mark Entity References
 // ----- ENTITY REFERENCES ---------------------------------------------------------------------------------------------
 
@@ -240,6 +265,19 @@ NSCharacterSet *OpalXMLSymbolCharacterSet = nil;
 	return [scannedText autorelease];
 }
 
+#pragma mark Comments
+// ===== COMMENTS ======================================================================================================
+
+- (BOOL)isAtComment
+{
+	return [self isAtString:OpalCommentBeginToken];
+}
+
+- (NSString *)scanComment
+{
+	return [self scanRegex:OpalXMLCommentPattern capture:1];
+}
+
 #pragma mark Scan Helpers
 // ===== SCAN HELPERS ==================================================================================================
 
@@ -249,26 +287,6 @@ NSCharacterSet *OpalXMLSymbolCharacterSet = nil;
 	BOOL result = [scanner scanString:matchString intoString:NULL];
 	[scanner setScanLocation:currLocation];
 	return result;
-}
-
-- (NSString *)scanTagName
-{
-	return [self scanRegex:OpalXMLNamePattern];
-}
-
-+ (NSString *)stringFromUnicodeCharacter:(UInt32)unicodeCharacter
-{
-	UInt32 stringBuffer[] = { unicodeCharacter };
-	NSData* stringData = [NSData dataWithBytes:stringBuffer length:sizeof(UInt32)];
-	
-	NSStringEncoding encoding;
-	if (CFByteOrderGetCurrent() == CFByteOrderBigEndian) {
-		encoding = NSUTF32BigEndianStringEncoding;
-	} else {
-		encoding = NSUTF32LittleEndianStringEncoding;
-	}
-	
-	return [[[NSString alloc] initWithData:stringData encoding:encoding] autorelease];
 }
 
 - (NSString *)scanRegex:(NSString *)pattern

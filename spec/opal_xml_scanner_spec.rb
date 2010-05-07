@@ -36,13 +36,34 @@ describe OpalXMLScanner do
   end
   
   describe "#scanTagName" do
-    
-    it "should return the tag name when found" do
-      OpalXMLScanner.scannerWithString("tag>text</tag>").scanTagName.should.equal("tag")
+    describe "when at a tag name" do
+      before do
+        @scanner = OpalXMLScanner.scannerWithString("tag>text</tag>")
+        @result = @scanner.scanTagName
+      end
+      
+      it "should return the tag name" do
+        @result.should.equal("tag")
+      end
+      
+      it "should advance the scan pointer" do
+        @scanner.scanLocation.should.equal(3)
+      end
     end
     
-    it "should return nil when not at a tag name" do
-      OpalXMLScanner.scannerWithString("&lt;").scanTagName.should.be.nil
+    describe "when not at a tag name" do
+      before do
+        @scanner = OpalXMLScanner.scannerWithString("&lt;")
+        @result = @scanner.scanTagName
+      end
+      
+      it "should return nil" do
+        @result.should.be.nil
+      end
+      
+      it "should not advance the scan pointer" do
+        @scanner.scanLocation.should.equal(0)
+      end
     end
     
   end
@@ -76,9 +97,34 @@ describe OpalXMLScanner do
   # ===== REFERENCES ===================================================================================================
   
   describe "#scanReference" do
-  
-    it "should return nil when not at a reference" do
-      OpalXMLScanner.scannerWithString("<tag>").scanReference.should.be.nil
+    describe "when not at a reference" do
+      before do
+        @scanner = OpalXMLScanner.scannerWithString("<tag>")
+        @result = @scanner.scanReference
+      end
+      
+      it "should return nil" do
+        @result.should.be.nil
+      end
+      
+      it "should not advance the scan pointer" do
+        @scanner.scanLocation.should.equal(0)
+      end
+    end
+    
+    describe "when at a reference" do
+      before do
+        @scanner = OpalXMLScanner.scannerWithString("&lt;")
+        @result = @scanner.scanReference
+      end
+      
+      it "should return the reference value" do
+        @result.should.equal("<")
+      end
+      
+      it "should advance the scan pointer" do
+        @scanner.scanLocation.should.equal(4)
+      end
     end
     
     it "should recognize entity references" do
@@ -140,12 +186,34 @@ describe OpalXMLScanner do
   end
   
   describe "#scanHexCharacterReference" do
-    it "should return nil when not before a hex reference" do
-      OpalXMLScanner.scannerWithString("&#10;").scanHexCharacterReference.should.be.nil
+    describe "when not before a hex reference" do
+      before do
+        @scanner = OpalXMLScanner.scannerWithString("&#10;")
+        @result = @scanner.scanHexCharacterReference
+      end
+      
+      it "should return nil" do
+        @result.should.be.nil
+      end
+      
+      it "should not advance the scan pointer" do
+        @scanner.scanLocation.should.equal(0)
+      end
     end
     
-    it "should ignore zero-length references" do
-      OpalXMLScanner.scannerWithString("&#x;").scanHexCharacterReference.should.be.nil
+    describe "when before a hex reference" do
+      before do
+        @scanner = OpalXMLScanner.scannerWithString("&#xA;")
+        @result = @scanner.scanHexCharacterReference
+      end
+      
+      it "should return nil" do
+        @result.should.equal("\x0A")
+      end
+      
+      it "should not advance the scan pointer" do
+        @scanner.scanLocation.should.equal(5)
+      end
     end
     
     it "should recognize 1-digit hex character references" do
@@ -183,8 +251,34 @@ describe OpalXMLScanner do
   end
   
   describe "#scanDecimalCharacterReference" do
-    it "should return nil when not before a decimal reference" do
-      OpalXMLScanner.scannerWithString("&#x0A;").scanDecimalCharacterReference.should.be.nil
+    describe "when not before a decimal reference" do
+      before do
+        @scanner = OpalXMLScanner.scannerWithString("&#x0A;")
+        @result = @scanner.scanDecimalCharacterReference
+      end
+      
+      it "should return nil" do
+        @result.should.be.nil
+      end
+      
+      it "should not advance the scan pointer" do
+        @scanner.scanLocation.should.equal(0)
+      end
+    end
+    
+    describe "when before a decimal reference" do
+      before do
+        @scanner = OpalXMLScanner.scannerWithString("&#10;&#11;")
+        @result = @scanner.scanDecimalCharacterReference
+      end
+      
+      it "should return the reference value" do
+        @result.should.equal("\x0A")
+      end
+      
+      it "should advance the scan pointer" do
+        @scanner.scanLocation.should.equal(5)
+      end
     end
     
     it "should ignore zero-length references" do
@@ -195,10 +289,6 @@ describe OpalXMLScanner do
       OpalXMLScanner.scannerWithString("&#0;").scanDecimalCharacterReference.should.equal("\u{0000}")
     end
     
-    it "should handle ascii characters" do
-      OpalXMLScanner.scannerWithString("&#10;").scanDecimalCharacterReference.should.equal("\u{000A}")
-    end
-
     it "should handle large characters" do
       OpalXMLScanner.scannerWithString("&#66304;").scanDecimalCharacterReference.should.equal("\u{10300}")
     end
@@ -227,8 +317,19 @@ describe OpalXMLScanner do
   
   describe "#scanEntityReference" do
     
-    it "should return nil when not at an entity reference" do
-      OpalXMLScanner.scannerWithString("&#x0A;").scanEntityReference.should.be.nil
+    describe "when not at an entity reference" do
+      before do
+        @scanner = OpalXMLScanner.scannerWithString("&#x0A;")
+        @result = @scanner.scanEntityReference
+      end
+      
+      it "should return nil" do
+        @result.should.be.nil
+      end
+      
+      it "should not advance the scan pointer" do
+        @scanner.scanLocation.should.equal(0)
+      end
     end
     
     it "should recognize &lt;" do
@@ -251,9 +352,69 @@ describe OpalXMLScanner do
       OpalXMLScanner.scannerWithString("&quot;").scanEntityReference.should.equal("\"")
     end
     
-    it "should return nil for unrecognized entities" do
-      # FIXME: this should throw a parsing error
-      OpalXMLScanner.scannerWithString("&wtf;").scanEntityReference.should.be.nil
+    describe "when at an unrecognized entity" do
+      before do
+        @scanner = OpalXMLScanner.scannerWithString("&wtf;&lt;")
+        @result = @scanner.scanEntityReference
+      end
+      
+      it "should return nil" do
+        # FIXME: this should throw a parsing error
+        @result.should.be.nil
+      end
+      
+      it "should advance the scan pointer" do
+        @scanner.scanLocation.should.equal(5)
+      end
+
+    end
+  end
+  
+  # ===== COMMENTS =====================================================================================================
+  
+  describe "#isAtComment" do
+    
+    it "should be true when the pointer is before a comment" do
+      OpalXMLScanner.scannerWithString("<!-- comment -->").isAtComment.should.equal(1)
+    end
+    
+    it "should be false when the pointer is not before a comment" do
+      OpalXMLScanner.scannerWithString("<!DOCTYPE greeting SYSTEM \"hello.dtd\">").isAtComment.should.equal(0)
+    end
+    
+  end
+  
+  describe "#scanComment" do
+    
+    describe "when at a comment" do
+      before do
+        @scanner = OpalXMLScanner.scannerWithString("<!-- Comment --> and some other stuff")
+        @result = @scanner.scanComment
+      end
+      
+      it "should return the comment body" do
+        @result.should.be.equal(" Comment ")
+      end
+      
+      it "should advance the scan pointer to the end of the comment" do
+        @scanner.scanLocation.should.equal(16)
+      end
+      
+    end
+    
+    describe "when not at a comment" do
+      before do
+        @scanner = OpalXMLScanner.scannerWithString("<!DOCTYPE greeting SYSTEM \"hello.dtd\">")
+        @result = @scanner.scanComment
+      end
+    
+      it "should return nil" do
+        @result.should.be.nil
+      end
+      
+      it "should not advance the scan pointer" do
+        @scanner.scanLocation.should.equal(0)
+      end
     end
     
   end

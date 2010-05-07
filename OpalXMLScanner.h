@@ -12,8 +12,12 @@
 	NSScanner *scanner;
 }
 
+// ===== INITIALIZATION ================================================================================================
+
 - (id)initWithString:(NSString *)xmlString;
 + (OpalXMLScanner *)scannerWithString:(NSString *)xmlString;
+
+// ===== LOCATION ======================================================================================================
 
 - (NSUInteger)scanLocation;
 - (NSRange)scanRange;
@@ -22,31 +26,51 @@
 
 - (BOOL)isAtEnd;
 
-- (BOOL)isAtString:(NSString *)matchString;
+// ===== START TAGS ====================================================================================================
+
 - (BOOL)isAtStartTag;
-- (BOOL)isAtEndTag;
-- (BOOL)isAtReference;
-- (BOOL)isAtCharacterReference;
-- (BOOL)isAtHexCharacterReference;
-- (BOOL)isAtDecimalCharacterReference;
-- (BOOL)isAtEntityReference;
-
-
 - (BOOL)scanStartTagBeginToken;
-- (BOOL)scanEndTagBeginToken;
+- (NSString *)scanTagName;
 - (BOOL)scanTagEndToken;
 
-- (NSString *)scanCharacterData;
+// ===== END TAGS ======================================================================================================
+
+- (BOOL)isAtEndTag;
+- (BOOL)scanEndTagBeginToken;
+
+// ===== REFERENCES ====================================================================================================
+
+- (BOOL)isAtReference;
 - (NSString *)scanReference;
+
+- (BOOL)isAtCharacterReference;
 - (NSString *)scanCharacterReference;
+
+- (BOOL)isAtHexCharacterReference;
 - (NSString *)scanHexCharacterReference;
+
+- (BOOL)isAtDecimalCharacterReference;
 - (NSString *)scanDecimalCharacterReference;
+
+- (BOOL)isAtEntityReference;
 - (NSString *)scanEntityReference;
-- (NSString *)scanTagName;
+
++ (NSString *)stringFromUnicodeCharacter:(UInt32)unicodeCharacter;
+
+// ===== CHARACTER DATA ================================================================================================
+
+- (NSString *)scanCharacterData;
+
+// ===== COMMENTS ======================================================================================================
+
+- (BOOL)isAtComment;
+- (NSString *)scanComment;
+
+// ===== SCAN HELPERS ==================================================================================================
+
+- (BOOL)isAtString:(NSString *)matchString;
 
 - (NSString *)scanRegex:(NSString *)regex;
 - (NSString *)scanRegex:(NSString *)regex capture:(NSUInteger)capture;
-
-+ (NSString *)stringFromUnicodeCharacter:(UInt32)unicodeCharacter;
 
 @end
