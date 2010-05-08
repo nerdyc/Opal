@@ -19,6 +19,8 @@ NSString *OpalTagEndToken = @">";
 NSString *OpalXMLNameStartCharsPattern = @"[:a-z_A-Z\\xC0-\\xD6\\xD8-\\xF6\\xF8-\\x{2FF}\\x{370}-\\x{37D}\\x{37F}-\\x{1FFF}\\x{200C}-\\x{200D}\\x{2070}-\\x{218F}\\x{2C00}-\\x{2FEF}\\x{3001}-\\x{D7FF}\\x{F900}-\\x{FDCF}\\x{FDF0}-\\x{FFFD}\\U00010000-\\U000EFFFF]";
 NSString *OpalXMLNameCharsPattern = @"[:a-z_A-Z\\xC0-\\xD6\\xD8-\\xF6\\xF8-\\x{2FF}\\x{370}-\\x{37D}\\x{37F}-\\x{1FFF}\\x{200C}-\\x{200D}\\x{2070}-\\x{218F}\\x{2C00}-\\x{2FEF}\\x{3001}-\\x{D7FF}\\x{F900}-\\x{FDCF}\\x{FDF0}-\\x{FFFD}\\U00010000-\\U000EFFFF\\.\\-0-9\\xB7\\x{0300}-\\x{036F}\\x{203F}-\\x{2040}]";
 NSString *OpalXMLNamePattern = nil;
+
+NSString *OpalXMLReferencePattern = @"^&#0*([0-9]+);";
 NSString *OpalXMLDecimalCharacterReferencePattern = @"^&#0*([0-9]+);";
 NSString *OpalXMLHexCharacterReferencePattern = @"^&#x0*([0-9a-fA-F]+);";
 NSString *OpalXMLEntityReferencePattern = nil;
@@ -28,7 +30,7 @@ NSCharacterSet *OpalXMLSymbolCharacterSet = nil;
 
 NSString *OpalCommentBeginToken = @"<!--";
 NSString *OpalCommentEndToken = @"-->";
-NSString *OpalXMLCommentPattern = @"<!--([\\x09\\x0A\\x0D\\x20-\\x{D7FF}\\x{E000}-\\x{FFFD}\\U00010000-\\U0010FFFF]*?)-->";
+NSString *OpalXMLCommentPattern = @"^<!--([\\x09\\x0A\\x0D\\x20-\\x{D7FF}\\x{E000}-\\x{FFFD}\\U00010000-\\U0010FFFF]*?)-->";
 
 @implementation OpalXMLScanner
 
@@ -40,6 +42,8 @@ NSString *OpalXMLCommentPattern = @"<!--([\\x09\\x0A\\x0D\\x20-\\x{D7FF}\\x{E000
 	OpalXMLNamePattern = [[NSString alloc] initWithFormat:@"^%@%@*", OpalXMLNameStartCharsPattern, OpalXMLNameCharsPattern, nil];
 	OpalXMLEntityReferencePattern = [[NSString alloc] initWithFormat:@"^&(%@%@*);", OpalXMLNameStartCharsPattern, OpalXMLNameCharsPattern, nil];
 	OpalXMLSymbolCharacterSet = [[NSCharacterSet characterSetWithCharactersInString:@"<&"] retain];
+	
+	OpalXMLReferencePattern = [[NSString alloc] initWithFormat:@"&(#x0*([0-9a-fA-F]+)|#0*([0-9]+)|%@%@*);", OpalXMLNameStartCharsPattern, OpalXMLNameCharsPattern, nil];
 	
 	OpalXMLDefaultEntities = [[NSDictionary dictionaryWithObjectsAndKeys:@"<", @"lt", @">", @"gt", @"&", @"amp", @"'", @"apos", @"\"", @"quot", nil] retain];
 }
@@ -91,6 +95,14 @@ NSString *OpalXMLCommentPattern = @"<!--([\\x09\\x0A\\x0D\\x20-\\x{D7FF}\\x{E000
 	return NSMakeRange([self scanLocation], [self remainingChars]);
 }
 
+#pragma mark XML Declaration
+// ===== XML DECLARATION ===============================================================================================
+
+- (BOOL)isAtXMLDeclaration
+{
+	return [self matchesRegex:@"<\\?xml\\s+"];
+}
+
 #pragma mark Start Tag
 // ===== START TAG =====================================================================================================
 
@@ -104,8 +116,29 @@ NSString *OpalXMLCommentPattern = @"<!--([\\x09\\x0A\\x0D\\x20-\\x{D7FF}\\x{E000
 	return [scanner scanString:OpalStartTagBeginToken intoString:NULL];
 }
 
+#pragma mark Attributes
+// ===== ATTRIBUTES ====================================================================================================
+
+- (NSString *)scanAttributeValue
+{
+	return [OpalXMLScanner unescapeValue:[self scanQuotedValue]];
+}
+
+- (NSString *)scanQuotedValue
+{
+	NSString *quote = [self scanRegex:@"^['\"]"];
+	if (quote != nil) {
+		NSString *rawValue = nil;
+		[scanner scanUpToString:quote intoString:&rawValue];
+		[scanner scanString:quote intoString:NULL];
+		return rawValue;
+	} else {
+		return nil;
+	}
+}
+
 #pragma mark End Tag
-// ===== START TAG =====================================================================================================
+// ===== END TAG =======================================================================================================
 
 - (BOOL)isAtEndTag
 {
@@ -116,12 +149,6 @@ NSString *OpalXMLCommentPattern = @"<!--([\\x09\\x0A\\x0D\\x20-\\x{D7FF}\\x{E000
 {
 	return [scanner scanString:OpalEndTagBeginToken intoString:NULL];
 }
-
-- (NSString *)scanTagName
-{
-	return [self scanRegex:OpalXMLNamePattern];
-}
-
 
 - (BOOL)scanTagEndToken
 {
@@ -171,18 +198,7 @@ NSString *OpalXMLCommentPattern = @"<!--([\\x09\\x0A\\x0D\\x20-\\x{D7FF}\\x{E000
 - (NSString *)scanHexCharacterReference
 {
 	NSString *hexString = [self scanRegex:OpalXMLHexCharacterReferencePattern capture:1];
-	if (hexString != nil && [hexString length] <= 8) {
-		NSScanner *hexScanner = [NSScanner scannerWithString:hexString];
-		unsigned charInt = 0;
-		if ([hexScanner scanHexInt:&charInt]) {
-			// convert int to unicode character
-			return [OpalXMLScanner stringFromUnicodeCharacter:charInt];
-		} else {
-			return nil;
-		}
-	} else {
-		return nil;
-	}
+	return [OpalXMLScanner unescapeHexString:hexString];
 }
 
 - (BOOL)isAtDecimalCharacterReference
@@ -193,23 +209,7 @@ NSString *OpalXMLCommentPattern = @"<!--([\\x09\\x0A\\x0D\\x20-\\x{D7FF}\\x{E000
 - (NSString *)scanDecimalCharacterReference
 {
 	NSString *decimalString = [self scanRegex:OpalXMLDecimalCharacterReferencePattern capture:1];
-	if (decimalString != nil && [decimalString length] <= 8) {
-		NSScanner *decimalScanner = [NSScanner scannerWithString:decimalString];
-		long long charValue = 0;
-		if ([decimalScanner scanLongLong:&charValue]) {
-			if (charValue >= 0 && charValue < 0x1000000) {
-				// convert int to unicode character
-				return [OpalXMLScanner stringFromUnicodeCharacter:(UInt32)charValue];
-			} else {
-				return nil;
-			}
-		} else {
-			return nil;
-		}
-	} else {
-		return nil;
-	}	
-	return nil;
+	return [OpalXMLScanner unescapeDecimalString:decimalString];
 }
 
 + (NSString *)stringFromUnicodeCharacter:(UInt32)unicodeCharacter
@@ -227,6 +227,59 @@ NSString *OpalXMLCommentPattern = @"<!--([\\x09\\x0A\\x0D\\x20-\\x{D7FF}\\x{E000
 	return [[[NSString alloc] initWithData:stringData encoding:encoding] autorelease];
 }
 
++ (NSString *)unescapeValue:(NSString *)stringValue
+{
+	if (stringValue == nil || [stringValue length] == 0) return stringValue;
+	
+	return [stringValue stringByReplacingOccurrencesOfRegex:OpalXMLReferencePattern
+												 usingBlock:^(NSInteger captureCount, NSString * const capturedStrings[captureCount], const NSRange capturedRanges[captureCount], volatile BOOL * const stop) {
+				if ([capturedStrings[3] length] != 0) {
+					return [self unescapeDecimalString:capturedStrings[3]];
+				} else if ([capturedStrings[2] length] != 0) {
+					return [self unescapeHexString:capturedStrings[2]];
+				} else {
+					// return (NSString *)[[capturedStrings[2] copy] autorelease];
+					return [self translateEntityReference:capturedStrings[1]];
+				}
+			}];
+}
+
++ (NSString *)unescapeHexString:(NSString *)hexString
+{
+	if (hexString != nil && [hexString length] <= 8) {
+		NSScanner *hexScanner = [NSScanner scannerWithString:hexString];
+		unsigned charInt = 0;
+		if ([hexScanner scanHexInt:&charInt]) {
+			// convert int to unicode character
+			return [OpalXMLScanner stringFromUnicodeCharacter:charInt];
+		} else {
+			return nil;
+		}
+	} else {
+		return nil;
+	}
+}
+
++ (NSString *)unescapeDecimalString:(NSString *)decimalString
+{
+	if (decimalString != nil && [decimalString length] <= 8) {
+		NSScanner *decimalScanner = [NSScanner scannerWithString:decimalString];
+		long long charValue = 0;
+		if ([decimalScanner scanLongLong:&charValue]) {
+			if (charValue >= 0 && charValue < 0x1000000) {
+				// convert int to unicode character
+				return [OpalXMLScanner stringFromUnicodeCharacter:(UInt32)charValue];
+			} else {
+				return nil;
+			}
+		} else {
+			return nil;
+		}
+	} else {
+		return nil;
+	}
+}
+
 #pragma mark Entity References
 // ----- ENTITY REFERENCES ---------------------------------------------------------------------------------------------
 
@@ -238,8 +291,12 @@ NSString *OpalXMLCommentPattern = @"<!--([\\x09\\x0A\\x0D\\x20-\\x{D7FF}\\x{E000
 - (NSString *)scanEntityReference
 {
 	NSString *entityRef = [self scanRegex:OpalXMLEntityReferencePattern capture:1];
-	NSString *value = [OpalXMLDefaultEntities objectForKey:entityRef];
-	return value;
+	return [OpalXMLScanner translateEntityReference:entityRef];
+}
+
++ (NSString *)translateEntityReference:(NSString *)entityRef
+{
+	return [OpalXMLDefaultEntities objectForKey:entityRef];
 }
 
 #pragma mark Character Data
@@ -270,7 +327,7 @@ NSString *OpalXMLCommentPattern = @"<!--([\\x09\\x0A\\x0D\\x20-\\x{D7FF}\\x{E000
 
 - (BOOL)isAtComment
 {
-	return [self isAtString:OpalCommentBeginToken];
+	return [self matchesRegex:OpalXMLCommentPattern];
 }
 
 - (NSString *)scanComment
@@ -281,12 +338,22 @@ NSString *OpalXMLCommentPattern = @"<!--([\\x09\\x0A\\x0D\\x20-\\x{D7FF}\\x{E000
 #pragma mark Scan Helpers
 // ===== SCAN HELPERS ==================================================================================================
 
+- (NSString *)scanName
+{
+	return [self scanRegex:OpalXMLNamePattern];
+}
+
 - (BOOL)isAtString:(NSString *)matchString
 {
 	NSUInteger currLocation = [scanner scanLocation];
 	BOOL result = [scanner scanString:matchString intoString:NULL];
 	[scanner setScanLocation:currLocation];
 	return result;
+}
+
+- (BOOL)matchesRegex:(NSString *)pattern
+{
+	return [[self xmlString] isMatchedByRegex:pattern inRange:[self scanRange]];
 }
 
 - (NSString *)scanRegex:(NSString *)pattern

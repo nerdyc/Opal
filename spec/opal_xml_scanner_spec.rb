@@ -35,11 +35,11 @@ describe OpalXMLScanner do
     
   end
   
-  describe "#scanTagName" do
+  describe "#scanName" do
     describe "when at a tag name" do
       before do
         @scanner = OpalXMLScanner.scannerWithString("tag>text</tag>")
-        @result = @scanner.scanTagName
+        @result = @scanner.scanName
       end
       
       it "should return the tag name" do
@@ -54,7 +54,7 @@ describe OpalXMLScanner do
     describe "when not at a tag name" do
       before do
         @scanner = OpalXMLScanner.scannerWithString("&lt;")
-        @result = @scanner.scanTagName
+        @result = @scanner.scanName
       end
       
       it "should return nil" do
@@ -64,6 +64,20 @@ describe OpalXMLScanner do
       it "should not advance the scan pointer" do
         @scanner.scanLocation.should.equal(0)
       end
+    end
+    
+  end
+  
+  # ===== XML DECLARATION ==============================================================================================
+  
+  describe "#isAtXMLDeclaration" do
+  
+    it "should be true when the pointer is before an XML declaration" do
+      OpalXMLScanner.scannerWithString("<?xml version='1.0' ?>").isAtXMLDeclaration.should.equal(1)
+    end
+    
+    it "should be false when the pointer is not before an XML declaration" do
+      OpalXMLScanner.scannerWithString("<?php echo ?>").isAtXMLDeclaration.should.equal(0)
     end
     
   end
@@ -80,6 +94,87 @@ describe OpalXMLScanner do
       OpalXMLScanner.scannerWithString("</tag>").isAtStartTag.should.equal(0)
     end
     
+  end
+  
+  # ===== ATTRIBUTES ===================================================================================================
+  describe "#scanQuotedValue" do
+    describe "when not at a quoted value" do
+      before do
+        @scanner = OpalXMLScanner.scannerWithString("attr=\"1\">")
+        @result = @scanner.scanQuotedValue
+      end
+      
+      it "should return nil" do
+        @result.should.be.nil
+      end
+      
+      it "should not advance the scan pointer" do
+        @scanner.scanLocation.should.equal(0)
+      end
+    end
+    
+    describe "when at a single-quoted value" do
+      before do
+        @scanner = OpalXMLScanner.scannerWithString("'1 or two Things \"> '>")
+        @result = @scanner.scanQuotedValue
+      end
+      
+      it "should return the quoted value" do
+        @result.should.equal("1 or two Things \"> ")
+      end
+      
+      it "should advance the scan pointer" do
+        @scanner.scanLocation.should.equal(21)
+      end
+    end
+    
+    describe "when at a double-quoted value" do
+      before do
+        @scanner = OpalXMLScanner.scannerWithString("\"1 or two Things '> \">")
+        @result = @scanner.scanQuotedValue
+      end
+      
+      it "should return the quoted value" do
+        @result.should.equal("1 or two Things '> ")
+      end
+      
+      it "should advance the scan pointer" do
+        @scanner.scanLocation.should.equal(21)
+      end    
+    end
+    
+    describe "when at a quoted value containing entities" do
+      before do
+        @scanner = OpalXMLScanner.scannerWithString("'1 or two Things &quot;&gt; '>")
+        @result = @scanner.scanQuotedValue
+      end
+      
+      it "should return the quoted value, without replacing entities" do
+        @result.should.equal("1 or two Things &quot;&gt; ")
+      end
+      
+      it "should advance the scan pointer past the last quote" do
+        @scanner.scanLocation.should.equal(29)
+      end
+    end
+  end
+  
+  describe "#scanAttributeValue" do
+    describe "when at an attribute value with entities" do
+      before do
+        @scanner = OpalXMLScanner.scannerWithString("'1 or two Things &quot;&gt; '>")
+        @result = @scanner.scanAttributeValue
+      end
+      
+      it "should return the attribute value, with entities replaced" do
+        @result.should.equal("1 or two Things \"> ")
+      end
+      
+      it "should advance the scan pointer" do
+        @scanner.scanLocation.should.equal(29)
+      end
+    end
+        
   end
   
   # ===== END TAG ======================================================================================================
@@ -367,6 +462,12 @@ describe OpalXMLScanner do
         @scanner.scanLocation.should.equal(5)
       end
 
+    end
+  end
+  
+  describe ".unescapeValue" do
+    it "should escape all character and entity references" do
+      OpalXMLScanner.unescapeValue("A &lt;tag&gt; v&#xA;lue&#10;").should.equal("A <tag> v\x0Alue\x0A")
     end
   end
   

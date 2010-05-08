@@ -32,13 +32,13 @@
 		return OPAL_END_DOCUMENT;
 	} else if ([scanner isAtStartTag]) {
 		[scanner scanStartTagBeginToken];
-		self.currentTagName = [scanner scanTagName];
+		self.currentTagName = [scanner scanName];
 		[scanner scanTagEndToken];
 		
 		return OPAL_START_TAG;
 	} else if ([scanner isAtEndTag]) {
 		[scanner scanEndTagBeginToken];
-		self.currentTagName = [scanner scanTagName];
+		self.currentTagName = [scanner scanName];
 		[scanner scanTagEndToken];
 		
 		return OPAL_END_TAG;

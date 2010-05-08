@@ -26,12 +26,20 @@
 
 - (BOOL)isAtEnd;
 
+// ===== XML Declaration ===============================================================================================
+
+- (BOOL)isAtXMLDeclaration;
+
 // ===== START TAGS ====================================================================================================
 
 - (BOOL)isAtStartTag;
 - (BOOL)scanStartTagBeginToken;
-- (NSString *)scanTagName;
 - (BOOL)scanTagEndToken;
+
+// ===== ATTRIBUTES ====================================================================================================
+
+- (NSString *)scanQuotedValue;
+- (NSString *)scanAttributeValue;
 
 // ===== END TAGS ======================================================================================================
 
@@ -56,6 +64,10 @@
 - (NSString *)scanEntityReference;
 
 + (NSString *)stringFromUnicodeCharacter:(UInt32)unicodeCharacter;
++ (NSString *)unescapeValue:(NSString *)stringValue;
++ (NSString *)unescapeHexString:(NSString *)hexString;
++ (NSString *)unescapeDecimalString:(NSString *)decimalString;
++ (NSString *)translateEntityReference:(NSString *)entityRef;
 
 // ===== CHARACTER DATA ================================================================================================
 
@@ -69,6 +81,9 @@
 // ===== SCAN HELPERS ==================================================================================================
 
 - (BOOL)isAtString:(NSString *)matchString;
+- (BOOL)matchesRegex:(NSString *)pattern;
+
+- (NSString *)scanName;
 
 - (NSString *)scanRegex:(NSString *)regex;
 - (NSString *)scanRegex:(NSString *)regex capture:(NSUInteger)capture;
