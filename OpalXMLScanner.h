@@ -40,6 +40,8 @@
 
 - (NSString *)scanQuotedValue;
 - (NSString *)scanAttributeValue;
+- (NSMutableDictionary *)scanAttributes;
+- (BOOL)scanAttributeInto:(NSMutableDictionary *)dictionary;
 
 // ===== END TAGS ======================================================================================================
 
@@ -73,6 +75,11 @@
 
 - (NSString *)scanCharacterData;
 
+// ===== WHITESPACE ====================================================================================================
+
+- (BOOL)isAtWhitespace;
+- (NSString *)scanWhitespace;
+
 // ===== COMMENTS ======================================================================================================
 
 - (BOOL)isAtComment;
@@ -83,7 +90,11 @@
 - (BOOL)isAtString:(NSString *)matchString;
 - (BOOL)matchesRegex:(NSString *)pattern;
 
+- (BOOL)isAtName;
 - (NSString *)scanName;
+
+- (BOOL)isAtEquals;
+- (NSString *)scanEquals;
 
 - (NSString *)scanRegex:(NSString *)regex;
 - (NSString *)scanRegex:(NSString *)regex capture:(NSUInteger)capture;

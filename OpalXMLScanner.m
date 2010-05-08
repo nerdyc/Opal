@@ -31,6 +31,7 @@ NSCharacterSet *OpalXMLSymbolCharacterSet = nil;
 NSString *OpalCommentBeginToken = @"<!--";
 NSString *OpalCommentEndToken = @"-->";
 NSString *OpalXMLCommentPattern = @"^<!--([\\x09\\x0A\\x0D\\x20-\\x{D7FF}\\x{E000}-\\x{FFFD}\\U00010000-\\U0010FFFF]*?)-->";
+NSString *OpalXMLWhitespacePattern = @"^\\s+";
 
 @implementation OpalXMLScanner
 
@@ -137,6 +138,51 @@ NSString *OpalXMLCommentPattern = @"^<!--([\\x09\\x0A\\x0D\\x20-\\x{D7FF}\\x{E00
 	}
 }
 
+- (NSMutableDictionary *)scanAttributes
+{
+	NSMutableDictionary *attributes = nil;
+	NSUInteger finalScanLocation = [self scanLocation];
+	if ([self isAtName]) {
+		attributes = [NSMutableDictionary dictionaryWithCapacity:1];		
+		while ([self scanAttributeInto:attributes]) {
+			finalScanLocation = [self scanLocation];
+			[self scanWhitespace]; // skip whitespace
+		}
+		
+		
+		if ([attributes count] > 0) {
+			[scanner setScanLocation:finalScanLocation];
+			return attributes;
+		} else {
+			return nil;
+		}
+	} else {
+		return nil;
+	}
+}
+
+- (BOOL)scanAttributeInto:(NSMutableDictionary *)dictionary
+{
+	NSUInteger originalScanLocation = [self scanLocation];
+	NSString *attributeName = nil;
+	NSString *attributeValue = nil;
+	
+	attributeName = [self scanName];
+	if (attributeName != nil) {
+		if ([self scanEquals] != nil) {
+			attributeValue = [self scanAttributeValue];
+			if (attributeValue != nil) {
+				[dictionary setObject:attributeValue forKey:attributeName];
+				return YES;
+			}
+		}
+	}
+	
+	// not found. Reset the scan pointer and return NO
+	[scanner setScanLocation:originalScanLocation];
+	return NO;
+}
+
 #pragma mark End Tag
 // ===== END TAG =======================================================================================================
 
@@ -234,11 +280,13 @@ NSString *OpalXMLCommentPattern = @"^<!--([\\x09\\x0A\\x0D\\x20-\\x{D7FF}\\x{E00
 	return [stringValue stringByReplacingOccurrencesOfRegex:OpalXMLReferencePattern
 												 usingBlock:^(NSInteger captureCount, NSString * const capturedStrings[captureCount], const NSRange capturedRanges[captureCount], volatile BOOL * const stop) {
 				if ([capturedStrings[3] length] != 0) {
+					// decimal string
 					return [self unescapeDecimalString:capturedStrings[3]];
 				} else if ([capturedStrings[2] length] != 0) {
+					// hex string
 					return [self unescapeHexString:capturedStrings[2]];
 				} else {
-					// return (NSString *)[[capturedStrings[2] copy] autorelease];
+					// entity reference
 					return [self translateEntityReference:capturedStrings[1]];
 				}
 			}];
@@ -322,6 +370,19 @@ NSString *OpalXMLCommentPattern = @"^<!--([\\x09\\x0A\\x0D\\x20-\\x{D7FF}\\x{E00
 	return [scannedText autorelease];
 }
 
+#pragma mark Whitespace
+// ===== WHITESPACE ====================================================================================================
+
+- (BOOL)isAtWhitespace
+{
+	return [self matchesRegex:OpalXMLWhitespacePattern];
+}
+
+- (NSString *)scanWhitespace
+{
+	return [self scanRegex:OpalXMLWhitespacePattern];
+}
+
 #pragma mark Comments
 // ===== COMMENTS ======================================================================================================
 
@@ -338,9 +399,24 @@ NSString *OpalXMLCommentPattern = @"^<!--([\\x09\\x0A\\x0D\\x20-\\x{D7FF}\\x{E00
 #pragma mark Scan Helpers
 // ===== SCAN HELPERS ==================================================================================================
 
+- (BOOL)isAtName
+{
+	return [self matchesRegex:OpalXMLNamePattern];
+}
+
 - (NSString *)scanName
 {
 	return [self scanRegex:OpalXMLNamePattern];
+}
+
+- (BOOL)isAtEquals
+{
+	return [self matchesRegex:@"^\\s*=\\s*"];
+}
+
+- (NSString *)scanEquals
+{
+	return [self scanRegex:@"^\\s*=\\s*"];
 }
 
 - (BOOL)isAtString:(NSString *)matchString

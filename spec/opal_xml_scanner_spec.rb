@@ -177,6 +177,89 @@ describe OpalXMLScanner do
         
   end
   
+  describe "#scanAttributeInto" do
+    
+    describe "when not at an attribute" do
+      before do
+        @scanner = OpalXMLScanner.scannerWithString("pi = 3.17 in some countries")
+        @attributes = {}
+        @result = @scanner.scanAttributeInto(@attributes)
+      end
+      
+      it "should return false" do
+        @result.should.equal(0)
+      end
+      
+      it "should not advance the scan pointer" do
+        @scanner.scanLocation.should.equal(0)
+      end
+      
+      it "should not change the attribute hash" do
+        @attributes.should.be.empty
+      end
+    end
+    
+    describe "when at an attribute" do
+      before do
+        @scanner = OpalXMLScanner.scannerWithString("ns:name='value'>")
+        @attributes = {}
+        @result = @scanner.scanAttributeInto(@attributes)
+      end
+      
+      it "should return true" do
+        @result.should.equal(1)
+      end
+      
+      it "should advance the scan pointer" do
+        @scanner.scanLocation.should.equal(15)
+      end
+      
+      it "should insert the value into the hash" do
+        @attributes.should.equal('ns:name' => 'value')
+      end
+    end  
+  end
+
+  describe "#scanAttributes" do
+    
+    describe "when not at an attribute list" do
+      it "should return nil" do
+        OpalXMLScanner.scannerWithString("<tag>").scanAttributes.should.be.nil
+      end
+    end
+    
+    describe "when a single attribute is present" do
+      before do
+        @scanner = OpalXMLScanner.scannerWithString("name='value'>")
+        @result = @scanner.scanAttributes
+      end
+      
+      it "should return the attribute" do
+        @result.should.equal('name' => 'value')
+      end
+      
+      it "should advance the scan pointer" do
+        @scanner.scanLocation.should.equal(12)
+      end
+    end
+    
+    describe "when mutiple attributes are present" do
+      before do
+        @scanner = OpalXMLScanner.scannerWithString("name='value' key=\"VALUE\">")
+        @result = @scanner.scanAttributes
+      end
+      
+      it "should return the attribute" do
+        @result.should.equal('name' => 'value', 'key' => 'VALUE')
+      end
+      
+      it "should advance the scan pointer" do
+        @scanner.scanLocation.should.equal(24)
+      end
+    end
+    
+  end
+  
   # ===== END TAG ======================================================================================================
 
   describe "#isAtEndTag" do
@@ -186,6 +269,50 @@ describe OpalXMLScanner do
     
     it "should be false when the pointer is not before an end tag" do
       OpalXMLScanner.scannerWithString("<tag>").isAtEndTag.should.equal(0)
+    end
+  end
+  
+  # ===== WHITESPACE ===================================================================================================
+  
+  describe "#isAtWhitespace" do
+    it "should return true when at whitespace" do
+      OpalXMLScanner.scannerWithString("\n\t\n\t<tag>").isAtWhitespace.should.equal(1)
+    end
+    
+    it "should return false when not at whitespace" do
+      OpalXMLScanner.scannerWithString("&#x0A;\n\t\n\t<tag>").isAtWhitespace.should.equal(0)
+    end
+  end
+  
+  describe "#scanWhitespace" do
+    describe "when not at whitespace" do
+      before do
+        @scanner = OpalXMLScanner.scannerWithString("&#x0A;\n\t\n\t<tag>")
+        @result = @scanner.scanWhitespace
+      end
+      
+      it "should return nil" do
+        @result.should.be.nil
+      end
+      
+      it "should not advance the scan pointer" do
+        @scanner.scanLocation.should.equal(0)
+      end
+    end
+    
+    describe "when at whitespace" do
+      before do
+        @scanner = OpalXMLScanner.scannerWithString("\n\t\n\t<tag>")
+        @result = @scanner.scanWhitespace
+      end
+      
+      it "should return the whitespace" do
+        @result.should.equal("\n\t\n\t")
+      end
+      
+      it "should advance the scan pointer" do
+        @scanner.scanLocation.should.equal(4)
+      end
     end
   end
   
