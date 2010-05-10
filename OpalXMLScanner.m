@@ -7,7 +7,6 @@
 //
 
 #import "OpalXMLScanner.h"
-#import "OpalMutableBitSet.h"
 #import "RegexKitLite.h"
 
 // ===== CONSTANTS =====================================================================================================
