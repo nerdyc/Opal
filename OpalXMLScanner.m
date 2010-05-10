@@ -103,12 +103,30 @@ NSString *OpalXMLWhitespacePattern = @"^\\s+";
 	return [self matchesRegex:@"<\\?xml\\s+"];
 }
 
+- (NSMutableDictionary *)scanXMLDeclaration
+{
+	NSUInteger originalLocation = [self scanLocation];
+	if ([self scanRegex:@"<\\?xml\\s+"]) {
+		NSMutableDictionary *declarationData = [self scanAttributes];
+		[self scanWhitespace];
+		if ([self scanRegex:@"\\?>"]) {
+			return declarationData;
+		} else {
+			// wha? ill formed declaration
+			[scanner setScanLocation:originalLocation];
+			return nil;
+		}
+	} else {
+		return nil;
+	}
+}
+
 #pragma mark Start Tag
 // ===== START TAG =====================================================================================================
 
 -(BOOL)isAtStartTag
 {
-	return [self isAtString:OpalStartTagBeginToken] && ![self isAtString:OpalEndTagBeginToken];
+	return ![self isAtEndTag] && ![self isAtXMLDeclaration] && [self isAtString:OpalStartTagBeginToken];
 }
 
 - (BOOL)scanStartTagBeginToken
@@ -348,6 +366,11 @@ NSString *OpalXMLWhitespacePattern = @"^\\s+";
 
 #pragma mark Character Data
 // ===== CHARACTER DATA ================================================================================================
+
+- (BOOL)isAtCharacterData
+{
+	return [self matchesRegex:@"^[^<&]"];
+}
 
 - (NSString *)scanCharacterData
 {

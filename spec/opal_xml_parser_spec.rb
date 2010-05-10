@@ -15,64 +15,91 @@ describe OpalXMLParser do
     end
   end
   
-  describe "#next" do
+  describe "#nextEvent" do
+    
+    describe "when at an XML declaration" do
+      before do
+        @parser = OpalXMLParser.alloc.initWithString("<?xml version=\"1.0\" encoding=\"utf-8\" standalone='yes' ?><document />")
+        @result = @parser.nextEvent
+      end
+      
+      it "should return START_DOCUMENT" do
+        @result.type.should.equal(OPAL_START_DOCUMENT_EVENT)
+      end
+      
+      it "should set version" do
+        @result.version.should.equal("1.0")
+      end
+      
+      it "should set encoding" do
+        @result.encoding.should.equal("utf-8")
+      end
+      
+      it "should set standalone" do
+        @result.standalone.should.be.true
+      end
+      
+      it "should advance the scan pointer" do
+        @parser.characterPosition.should.equal(56)
+      end
+      
+    end
     
     describe "when at a start tag" do
       before do
         @parser = OpalXMLParser.alloc.initWithString("<document></document>")
-        @result = @parser.next
+        @result = @parser.nextEvent
       end
       
       it "should return START_TAG" do
-        @result.should.equal(OPAL_START_TAG)
+        @result.type.should.equal(OPAL_START_TAG_EVENT)
       end
       
       it "should update currentTagName" do
-        @parser.currentTagName.should.equal("document")
+        @result.tagName.should.equal("document")
       end
       
       it "should advance the scan pointer to the end of the tag" do
-        @parser.position.should.equal(10)
+        @parser.characterPosition.should.equal(10)
       end
       
     end
     
     describe "when at an end tag" do
       before do
-        @parser = OpalXMLParser.alloc.initWithString("</document>")
-        @result = @parser.next
+        @parser = OpalXMLParser.alloc.initWithString("</document><tag></tag>")
+        @result = @parser.nextEvent
       end
       
       it "should return END_TAG" do
-        @result.should.equal(OPAL_END_TAG)
+        @result.type.should.equal(OPAL_END_TAG_EVENT)
       end
       
       it "should update currentTagName" do
-        @parser.currentTagName.should.equal("document")
+        @result.tagName.should.equal("document")
       end
       
       it "should advance the scan pointer to the end of the tag" do
-        @parser.position.should.equal(11)
+        @parser.characterPosition.should.equal(11)
       end
     end
     
     describe "when at a text" do
       before do
         @parser = OpalXMLParser.alloc.initWithString("text la la <tag />")
-        @result = @parser.next()
-
+        @result = @parser.nextEvent
       end
       
       it "should return TEXT" do
-        @result.should.equal(OPAL_TEXT)
+        @result.type.should.equal(OPAL_TEXT_EVENT)
       end
       
       it "should update the parsed content" do
-        @parser.characterData.should == 'text la la '
+        @result.content.should == 'text la la '
       end
       
       it "should advance the scan pointer to the end of the text section" do
-        @parser.position.should.equal(11)
+        @parser.characterPosition.should.equal(11)
       end
       
     end

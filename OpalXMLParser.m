@@ -8,6 +8,7 @@
 
 #import "OpalXMLParser.h"
 #import "OpalXMLScanner.h"
+#import "OpalXMLEvent.h"
 
 
 @implementation OpalXMLParser
@@ -26,36 +27,72 @@
 	[super dealloc];
 }
 
-- (OpalXMLTokenType)next
+- (OpalXMLEvent *)nextEvent
 {
-	if ([scanner isAtEnd]) {
-		return OPAL_END_DOCUMENT;
-	} else if ([scanner isAtStartTag]) {
+	NSString *tagName;
+	NSDictionary *attributes;
+	NSString *content;
+	
+	if ([scanner isAtStartTag]) {
 		[scanner scanStartTagBeginToken];
-		self.currentTagName = [scanner scanName];
+		tagName = [scanner scanName];
+		[scanner scanWhitespace];
+		attributes = [scanner scanAttributes];
+		[scanner scanWhitespace];
 		[scanner scanTagEndToken];
 		
-		return OPAL_START_TAG;
+		return [OpalXMLEvent startTagEventWithTagName:tagName andAttributes:attributes];
 	} else if ([scanner isAtEndTag]) {
 		[scanner scanEndTagBeginToken];
-		self.currentTagName = [scanner scanName];
+		tagName = [scanner scanName];
+		[scanner scanWhitespace];
 		[scanner scanTagEndToken];
 		
-		return OPAL_END_TAG;
+		return [OpalXMLEvent endTagEventWithTagName:tagName];
+	} else if ([scanner isAtCharacterData]) {
+		content = [scanner scanCharacterData];
+		return [OpalXMLEvent textEventWithContent:content];
+	} else if ([scanner isAtXMLDeclaration]) {
+		attributes = [scanner scanXMLDeclaration];
+		NSString *encoding = [attributes objectForKey:@"encoding"];
+		NSString *version = [attributes objectForKey:@"version"];
+		NSString *standaloneValue = [attributes objectForKey:@"standalone"];
+		BOOL standalone = YES;
+		if (standaloneValue != nil) {
+			standalone = [standaloneValue isEqualToString:@"yes"];
+		}
+		
+		return [OpalXMLEvent startDocumentEventWithVersion:version encoding:encoding standalone:standalone];
 	} else {
-		self.characterData = [scanner scanCharacterData];		
-		return OPAL_TEXT;
+		return nil;
 	}
 }
 
-- (NSUInteger)position
+- (NSUInteger)characterPosition
 {
 	return [scanner scanLocation];
 }
 
-// ===== TAG NAME (start tag, end tag) =========================================
-
-@synthesize currentTagName;
-@synthesize characterData;
+//- (OpalXMLEventType)next
+//{
+//	if ([scanner isAtEnd]) {
+//		return OPAL_END_DOCUMENT;
+//	} else if ([scanner isAtStartTag]) {
+//		[scanner scanStartTagBeginToken];
+//		self.currentTagName = [scanner scanName];
+//		[scanner scanTagEndToken];
+//		
+//		return OPAL_START_TAG;
+//	} else if ([scanner isAtEndTag]) {
+//		[scanner scanEndTagBeginToken];
+//		self.currentTagName = [scanner scanName];
+//		[scanner scanTagEndToken];
+//		
+//		return OPAL_END_TAG;
+//	} else {
+//		self.characterData = [scanner scanCharacterData];		
+//		return OPAL_TEXT;
+//	}
+//}
 
 @end

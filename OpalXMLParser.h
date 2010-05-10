@@ -8,28 +8,14 @@
 
 #import <Foundation/Foundation.h>
 @class OpalXMLScanner;
-
-enum OpalXMLTokenType {
-  OPAL_START_DOCUMENT = 1,
-  OPAL_END_DOCUMENT,
-  OPAL_START_TAG,
-  OPAL_END_TAG,
-  OPAL_TEXT
-};
-typedef enum OpalXMLTokenType OpalXMLTokenType;
+@class OpalXMLEvent;
 
 @interface OpalXMLParser : NSObject {
-  OpalXMLScanner *scanner;
-  NSString *currentTagName;
-  NSString *characterData;
+	OpalXMLScanner *scanner;
 }
 
 - (id)initWithString:(NSString *)xmlstring;
-
-- (NSUInteger)position;
-- (OpalXMLTokenType)next;
-
-@property (copy) NSString *currentTagName;
-@property (copy) NSString *characterData;
+- (NSUInteger)characterPosition;
+- (OpalXMLEvent *)nextEvent;
 
 @end

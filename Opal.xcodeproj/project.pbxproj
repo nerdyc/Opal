@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		6209984C1195EBDA0090D0BE /* OpalXMLEvent.h in Headers */ = {isa = PBXBuildFile; fileRef = 6209984A1195EBDA0090D0BE /* OpalXMLEvent.h */; };
+		6209984D1195EBDA0090D0BE /* OpalXMLEvent.m in Sources */ = {isa = PBXBuildFile; fileRef = 6209984B1195EBDA0090D0BE /* OpalXMLEvent.m */; };
 		627912A311909ED400A6719C /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 627912A211909ED400A6719C /* Foundation.framework */; };
 		627912A811909F2000A6719C /* OpalXMLParser.h in Headers */ = {isa = PBXBuildFile; fileRef = 627912A611909F2000A6719C /* OpalXMLParser.h */; };
 		627912A911909F2000A6719C /* OpalXMLParser.m in Sources */ = {isa = PBXBuildFile; fileRef = 627912A711909F2000A6719C /* OpalXMLParser.m */; };
@@ -16,9 +18,6 @@
 		6279153C1190C10100A6719C /* opal_xml_scanner_spec.rb in Resources */ = {isa = PBXBuildFile; fileRef = 6279153B1190C10100A6719C /* opal_xml_scanner_spec.rb */; };
 		627915401190C17B00A6719C /* OpalXMLScanner.h in Headers */ = {isa = PBXBuildFile; fileRef = 6279152F1190C09500A6719C /* OpalXMLScanner.h */; };
 		627915421190C18200A6719C /* OpalXMLScanner.m in Sources */ = {isa = PBXBuildFile; fileRef = 627915301190C09500A6719C /* OpalXMLScanner.m */; };
-		6279159B11910D6A00A6719C /* OpalMutableBitSet.h in Headers */ = {isa = PBXBuildFile; fileRef = 6279159911910D6A00A6719C /* OpalMutableBitSet.h */; };
-		6279159C11910D6A00A6719C /* OpalMutableBitSet.m in Sources */ = {isa = PBXBuildFile; fileRef = 6279159A11910D6A00A6719C /* OpalMutableBitSet.m */; };
-		627915A11191137F00A6719C /* opal_mutable_bit_set_spec.rb in Resources */ = {isa = PBXBuildFile; fileRef = 6279159D1191136900A6719C /* opal_mutable_bit_set_spec.rb */; };
 		6279163C1191322600A6719C /* RegexKitLite.h in Headers */ = {isa = PBXBuildFile; fileRef = 6279163A1191322600A6719C /* RegexKitLite.h */; };
 		6279163D1191322600A6719C /* RegexKitLite.m in Sources */ = {isa = PBXBuildFile; fileRef = 6279163B1191322600A6719C /* RegexKitLite.m */; };
 		6279169A119377D100A6719C /* Opal.bridgesupport in Resources */ = {isa = PBXBuildFile; fileRef = 62791699119377D100A6719C /* Opal.bridgesupport */; };
@@ -31,7 +30,7 @@
 			isa = PBXContainerItemProxy;
 			containerPortal = 0867D690FE84028FC02AAC07 /* Project object */;
 			proxyType = 1;
-			remoteGlobalIDString = 8DC2EF4F0486A6940098B216 /* Opal */;
+			remoteGlobalIDString = 8DC2EF4F0486A6940098B216;
 			remoteInfo = Opal;
 		};
 /* End PBXContainerItemProxy section */
@@ -53,20 +52,19 @@
 /* Begin PBXFileReference section */
 		089C1667FE841158C02AAC07 /* English */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; name = English; path = English.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		32DBCF5E0370ADEE00C91783 /* Opal_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Opal_Prefix.pch; sourceTree = "<group>"; };
+		6209984A1195EBDA0090D0BE /* OpalXMLEvent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OpalXMLEvent.h; sourceTree = "<group>"; };
+		6209984B1195EBDA0090D0BE /* OpalXMLEvent.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OpalXMLEvent.m; sourceTree = "<group>"; };
 		627912A211909ED400A6719C /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		627912A611909F2000A6719C /* OpalXMLParser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OpalXMLParser.h; sourceTree = "<group>"; };
 		627912A711909F2000A6719C /* OpalXMLParser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OpalXMLParser.m; sourceTree = "<group>"; };
 		627914941190A06100A6719C /* Opal.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Opal.h; sourceTree = "<group>"; };
-		627914AC1190AA9000A6719C /* TestOpal.octest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; name = TestOpal.octest; path = build/Debug/TestOpal.octest; sourceTree = "<group>"; };
+		627914AC1190AA9000A6719C /* TestOpal.octest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = TestOpal.octest; sourceTree = BUILT_PRODUCTS_DIR; };
 		627914AD1190AA9000A6719C /* TestOpal-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "TestOpal-Info.plist"; sourceTree = "<group>"; };
 		627914B31190AABE00A6719C /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
 		627914C61190AD1000A6719C /* opal_xml_parser_spec.rb */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.ruby; path = opal_xml_parser_spec.rb; sourceTree = "<group>"; };
 		6279152F1190C09500A6719C /* OpalXMLScanner.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OpalXMLScanner.h; sourceTree = "<group>"; };
 		627915301190C09500A6719C /* OpalXMLScanner.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OpalXMLScanner.m; sourceTree = "<group>"; };
 		6279153B1190C10100A6719C /* opal_xml_scanner_spec.rb */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.ruby; path = opal_xml_scanner_spec.rb; sourceTree = "<group>"; };
-		6279159911910D6A00A6719C /* OpalMutableBitSet.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OpalMutableBitSet.h; sourceTree = "<group>"; };
-		6279159A11910D6A00A6719C /* OpalMutableBitSet.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OpalMutableBitSet.m; sourceTree = "<group>"; };
-		6279159D1191136900A6719C /* opal_mutable_bit_set_spec.rb */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.ruby; path = opal_mutable_bit_set_spec.rb; sourceTree = "<group>"; };
 		6279163A1191322600A6719C /* RegexKitLite.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RegexKitLite.h; sourceTree = "<group>"; };
 		6279163B1191322600A6719C /* RegexKitLite.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RegexKitLite.m; sourceTree = "<group>"; };
 		62791699119377D100A6719C /* Opal.bridgesupport */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = Opal.bridgesupport; sourceTree = "<group>"; };
@@ -144,8 +142,8 @@
 				627912A711909F2000A6719C /* OpalXMLParser.m */,
 				6279152F1190C09500A6719C /* OpalXMLScanner.h */,
 				627915301190C09500A6719C /* OpalXMLScanner.m */,
-				6279159911910D6A00A6719C /* OpalMutableBitSet.h */,
-				6279159A11910D6A00A6719C /* OpalMutableBitSet.m */,
+				6209984A1195EBDA0090D0BE /* OpalXMLEvent.h */,
+				6209984B1195EBDA0090D0BE /* OpalXMLEvent.m */,
 			);
 			name = Classes;
 			sourceTree = "<group>";
@@ -181,7 +179,6 @@
 			children = (
 				627914C61190AD1000A6719C /* opal_xml_parser_spec.rb */,
 				6279153B1190C10100A6719C /* opal_xml_scanner_spec.rb */,
-				6279159D1191136900A6719C /* opal_mutable_bit_set_spec.rb */,
 			);
 			indentWidth = 2;
 			path = spec;
@@ -199,8 +196,8 @@
 				627915401190C17B00A6719C /* OpalXMLScanner.h in Headers */,
 				627912A811909F2000A6719C /* OpalXMLParser.h in Headers */,
 				627914951190A06100A6719C /* Opal.h in Headers */,
-				6279159B11910D6A00A6719C /* OpalMutableBitSet.h in Headers */,
 				6279163C1191322600A6719C /* RegexKitLite.h in Headers */,
+				6209984C1195EBDA0090D0BE /* OpalXMLEvent.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -270,7 +267,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				627915A11191137F00A6719C /* opal_mutable_bit_set_spec.rb in Resources */,
 				627914C71190AD1000A6719C /* opal_xml_parser_spec.rb in Resources */,
 				6279153C1190C10100A6719C /* opal_xml_scanner_spec.rb in Resources */,
 			);
@@ -317,8 +313,8 @@
 			files = (
 				627915421190C18200A6719C /* OpalXMLScanner.m in Sources */,
 				627912A911909F2000A6719C /* OpalXMLParser.m in Sources */,
-				6279159C11910D6A00A6719C /* OpalMutableBitSet.m in Sources */,
 				6279163D1191322600A6719C /* RegexKitLite.m in Sources */,
+				6209984D1195EBDA0090D0BE /* OpalXMLEvent.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

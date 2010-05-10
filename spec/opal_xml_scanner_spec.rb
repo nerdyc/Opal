@@ -13,11 +13,11 @@ describe OpalXMLScanner do
   
   describe "#isAtEnd" do
     it "should return true when at the end of the string" do
-      OpalXMLScanner.scannerWithString("").isAtEnd.should.equal(1)
+      OpalXMLScanner.scannerWithString("").isAtEnd.should.be.true
     end
     
     it "should return false when not at the end of the string" do
-      OpalXMLScanner.scannerWithString("<tag>").isAtEnd.should.equal(0)
+      OpalXMLScanner.scannerWithString("<tag>").isAtEnd.should.be.false
     end
   end
   
@@ -26,11 +26,11 @@ describe OpalXMLScanner do
   describe "#isAtString" do
     
     it "should return true when the given string matches the current scan location" do
-      OpalXMLScanner.scannerWithString("<tag>").isAtString("<").should.equal(1)
+      OpalXMLScanner.scannerWithString("<tag>").isAtString("<").should.be.true
     end
 
     it "should return false when the given string doesn't match the current scan location" do
-      OpalXMLScanner.scannerWithString("<tag>").isAtString("tag").should.equal(0)
+      OpalXMLScanner.scannerWithString("<tag>").isAtString("tag").should.be.false
     end
     
   end
@@ -73,25 +73,57 @@ describe OpalXMLScanner do
   describe "#isAtXMLDeclaration" do
   
     it "should be true when the pointer is before an XML declaration" do
-      OpalXMLScanner.scannerWithString("<?xml version='1.0' ?>").isAtXMLDeclaration.should.equal(1)
+      OpalXMLScanner.scannerWithString("<?xml version='1.0' ?>").isAtXMLDeclaration.should.be.true
     end
     
     it "should be false when the pointer is not before an XML declaration" do
-      OpalXMLScanner.scannerWithString("<?php echo ?>").isAtXMLDeclaration.should.equal(0)
+      OpalXMLScanner.scannerWithString("<?php echo ?>").isAtXMLDeclaration.should.be.false
     end
     
   end
-
+  
+  describe "#scanXMLDeclaration" do
+    describe "when at an XML declaration" do
+      before do
+        @scanner = OpalXMLScanner.scannerWithString("<?xml version='1.0' encoding='UTF8' standalone=\"yes\" ?><document />")
+        @result = @scanner.scanXMLDeclaration
+      end
+      
+      it "should return a hash of declaration data" do
+        @result.should.equal('version' => '1.0', 'encoding' => 'UTF8', 'standalone' => 'yes')
+      end
+      
+      it "should advance the scan pointer" do
+        @scanner.scanLocation.should.equal(55)
+      end
+    end
+    
+    describe "when not at an XML declaration" do
+      before do
+        @scanner = OpalXMLScanner.scannerWithString("<?php echo ?>")
+        @result = @scanner.scanXMLDeclaration
+      end
+      
+      it "should return nil" do
+        @result.should.be.nil
+      end
+      
+      it "should not advance the scan pointer" do
+        @scanner.scanLocation.should.equal(0)
+      end
+    end
+  end
+  
   # ===== START TAG ====================================================================================================
 
   describe "#isAtStartTag" do
     
     it "should be true when the pointer is before a start tag" do
-      OpalXMLScanner.scannerWithString("<tag>").isAtStartTag.should.equal(1)
+      OpalXMLScanner.scannerWithString("<tag>").isAtStartTag.should.be.true
     end
     
     it "should be false when the pointer is not before a start tag" do
-      OpalXMLScanner.scannerWithString("</tag>").isAtStartTag.should.equal(0)
+      OpalXMLScanner.scannerWithString("</tag>").isAtStartTag.should.be.false
     end
     
   end
@@ -187,7 +219,7 @@ describe OpalXMLScanner do
       end
       
       it "should return false" do
-        @result.should.equal(0)
+        @result.should.be.false
       end
       
       it "should not advance the scan pointer" do
@@ -207,7 +239,7 @@ describe OpalXMLScanner do
       end
       
       it "should return true" do
-        @result.should.equal(1)
+        @result.should.be.true
       end
       
       it "should advance the scan pointer" do
@@ -264,11 +296,11 @@ describe OpalXMLScanner do
 
   describe "#isAtEndTag" do
     it "should be true when the pointer is before an end tag" do
-      OpalXMLScanner.scannerWithString("</tag>").isAtEndTag.should.equal(1)
+      OpalXMLScanner.scannerWithString("</tag>").isAtEndTag.should.be.true
     end
     
     it "should be false when the pointer is not before an end tag" do
-      OpalXMLScanner.scannerWithString("<tag>").isAtEndTag.should.equal(0)
+      OpalXMLScanner.scannerWithString("<tag>").isAtEndTag.should.be.false
     end
   end
   
@@ -276,11 +308,11 @@ describe OpalXMLScanner do
   
   describe "#isAtWhitespace" do
     it "should return true when at whitespace" do
-      OpalXMLScanner.scannerWithString("\n\t\n\t<tag>").isAtWhitespace.should.equal(1)
+      OpalXMLScanner.scannerWithString("\n\t\n\t<tag>").isAtWhitespace.should.be.true
     end
     
     it "should return false when not at whitespace" do
-      OpalXMLScanner.scannerWithString("&#x0A;\n\t\n\t<tag>").isAtWhitespace.should.equal(0)
+      OpalXMLScanner.scannerWithString("&#x0A;\n\t\n\t<tag>").isAtWhitespace.should.be.false
     end
   end
   
@@ -367,43 +399,43 @@ describe OpalXMLScanner do
   
   describe "#isAtCharacterReference" do
     it "should be true when the pointer is before a hex character reference" do
-      OpalXMLScanner.scannerWithString("&#x0A;").isAtCharacterReference.should.equal(1)
+      OpalXMLScanner.scannerWithString("&#x0A;").isAtCharacterReference.should.be.true
     end
     
     it "should be true when the pointer is before a decimal character reference" do
-      OpalXMLScanner.scannerWithString("&#10;").isAtCharacterReference.should.equal(1)
+      OpalXMLScanner.scannerWithString("&#10;").isAtCharacterReference.should.be.true
     end
     
     it "should be false when the pointer is not before a character reference" do
-      OpalXMLScanner.scannerWithString("&amp;").isAtCharacterReference.should.equal(0)
+      OpalXMLScanner.scannerWithString("&amp;").isAtCharacterReference.should.be.false
     end
   end
   
   describe "#isAtHexCharacterReference" do
     it "should be true when the pointer is before a hex character reference" do
-      OpalXMLScanner.scannerWithString("&#x0A;").isAtHexCharacterReference.should.equal(1)
+      OpalXMLScanner.scannerWithString("&#x0A;").isAtHexCharacterReference.should.be.true
     end
     
     it "should be fals when the pointer is before a decimal character reference" do
-      OpalXMLScanner.scannerWithString("&#10;").isAtHexCharacterReference.should.equal(0)
+      OpalXMLScanner.scannerWithString("&#10;").isAtHexCharacterReference.should.be.false
     end
     
     it "should be false when the pointer is not before a character reference" do
-      OpalXMLScanner.scannerWithString("&amp;").isAtHexCharacterReference.should.equal(0)
+      OpalXMLScanner.scannerWithString("&amp;").isAtHexCharacterReference.should.be.false
     end
   end
   
   describe "#isAtDecimalCharacterReference" do
     it "should be false when the pointer is before a hex character reference" do
-      OpalXMLScanner.scannerWithString("&#x0A;").isAtDecimalCharacterReference.should.equal(0)
+      OpalXMLScanner.scannerWithString("&#x0A;").isAtDecimalCharacterReference.should.be.false
     end
     
     it "should be true when the pointer is before a decimal character reference" do
-      OpalXMLScanner.scannerWithString("&#10;").isAtDecimalCharacterReference.should.equal(1)
+      OpalXMLScanner.scannerWithString("&#10;").isAtDecimalCharacterReference.should.be.true
     end
     
     it "should be false when the pointer is not before a character reference" do
-      OpalXMLScanner.scannerWithString("&amp;").isAtDecimalCharacterReference.should.equal(0)
+      OpalXMLScanner.scannerWithString("&amp;").isAtDecimalCharacterReference.should.be.false
     end
   end
   
@@ -529,11 +561,11 @@ describe OpalXMLScanner do
 
   describe "#isAtEntityReference" do
     it "should be true when the pointer is before an entity reference" do
-      OpalXMLScanner.scannerWithString("&amp;").isAtEntityReference.should.equal(1)
+      OpalXMLScanner.scannerWithString("&amp;").isAtEntityReference.should.be.true
     end
     
     it "should be false when the pointer is not before an entity reference" do
-      OpalXMLScanner.scannerWithString("&#x0A;").isAtEntityReference.should.equal(0)
+      OpalXMLScanner.scannerWithString("&#x0A;").isAtEntityReference.should.be.false
     end
   end
   
@@ -603,11 +635,11 @@ describe OpalXMLScanner do
   describe "#isAtComment" do
     
     it "should be true when the pointer is before a comment" do
-      OpalXMLScanner.scannerWithString("<!-- comment -->").isAtComment.should.equal(1)
+      OpalXMLScanner.scannerWithString("<!-- comment -->").isAtComment.should.be.true
     end
     
     it "should be false when the pointer is not before a comment" do
-      OpalXMLScanner.scannerWithString("<!DOCTYPE greeting SYSTEM \"hello.dtd\">").isAtComment.should.equal(0)
+      OpalXMLScanner.scannerWithString("<!DOCTYPE greeting SYSTEM \"hello.dtd\">").isAtComment.should.be.false
     end
     
   end
