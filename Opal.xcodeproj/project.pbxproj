@@ -54,6 +54,7 @@
 		32DBCF5E0370ADEE00C91783 /* Opal_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Opal_Prefix.pch; sourceTree = "<group>"; };
 		6209984A1195EBDA0090D0BE /* OpalXMLEvent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OpalXMLEvent.h; sourceTree = "<group>"; };
 		6209984B1195EBDA0090D0BE /* OpalXMLEvent.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OpalXMLEvent.m; sourceTree = "<group>"; };
+		620998C511979CF40090D0BE /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = README.md; sourceTree = "<group>"; };
 		627912A211909ED400A6719C /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		627912A611909F2000A6719C /* OpalXMLParser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OpalXMLParser.h; sourceTree = "<group>"; };
 		627912A711909F2000A6719C /* OpalXMLParser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OpalXMLParser.m; sourceTree = "<group>"; };
@@ -131,6 +132,7 @@
 				62791699119377D100A6719C /* Opal.bridgesupport */,
 				8DC2EF5A0486A6940098B216 /* Info.plist */,
 				089C1666FE841158C02AAC07 /* InfoPlist.strings */,
+				620998C511979CF40090D0BE /* README.md */,
 			);
 			name = Resources;
 			sourceTree = "<group>";
