@@ -104,6 +104,26 @@ describe OpalXMLParser do
       
     end
     
+    describe "when at a comment" do
+      before do
+        @parser = OpalXMLParser.alloc.initWithString("<!-- comment --> text la la <tag />")
+        @result = @parser.nextEvent
+      end
+      
+      it "should return COMMENT" do
+        @result.type.should.equal(OPAL_COMMENT_EVENT)
+      end
+      
+      it "should include the comment text" do
+        @result.content.should == ' comment '
+      end
+      
+      it "should advance the scan pointer to the end of the text section" do
+        @parser.characterPosition.should.equal(16)
+      end
+      
+    end
+    
   end
   
 end

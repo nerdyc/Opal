@@ -15,6 +15,8 @@ NSString *OpalStartTagBeginToken = @"<";
 NSString *OpalEndTagBeginToken = @"</";
 NSString *OpalTagEndToken = @">";
 
+NSString *OpalStartTagBeginPattern = nil;
+
 NSString *OpalXMLNameStartCharsPattern = @"[:a-z_A-Z\\xC0-\\xD6\\xD8-\\xF6\\xF8-\\x{2FF}\\x{370}-\\x{37D}\\x{37F}-\\x{1FFF}\\x{200C}-\\x{200D}\\x{2070}-\\x{218F}\\x{2C00}-\\x{2FEF}\\x{3001}-\\x{D7FF}\\x{F900}-\\x{FDCF}\\x{FDF0}-\\x{FFFD}\\U00010000-\\U000EFFFF]";
 NSString *OpalXMLNameCharsPattern = @"[:a-z_A-Z\\xC0-\\xD6\\xD8-\\xF6\\xF8-\\x{2FF}\\x{370}-\\x{37D}\\x{37F}-\\x{1FFF}\\x{200C}-\\x{200D}\\x{2070}-\\x{218F}\\x{2C00}-\\x{2FEF}\\x{3001}-\\x{D7FF}\\x{F900}-\\x{FDCF}\\x{FDF0}-\\x{FFFD}\\U00010000-\\U000EFFFF\\.\\-0-9\\xB7\\x{0300}-\\x{036F}\\x{203F}-\\x{2040}]";
 NSString *OpalXMLNamePattern = nil;
@@ -42,6 +44,8 @@ NSString *OpalXMLWhitespacePattern = @"^\\s+";
 	OpalXMLNamePattern = [[NSString alloc] initWithFormat:@"^%@%@*", OpalXMLNameStartCharsPattern, OpalXMLNameCharsPattern, nil];
 	OpalXMLEntityReferencePattern = [[NSString alloc] initWithFormat:@"^&(%@%@*);", OpalXMLNameStartCharsPattern, OpalXMLNameCharsPattern, nil];
 	OpalXMLSymbolCharacterSet = [[NSCharacterSet characterSetWithCharactersInString:@"<&"] retain];
+	
+	OpalStartTagBeginPattern = [[NSString alloc] initWithFormat:@"^<%@%@*[\\s/>]", OpalXMLNameStartCharsPattern, OpalXMLNameCharsPattern, nil];
 	
 	OpalXMLReferencePattern = [[NSString alloc] initWithFormat:@"&(#x0*([0-9a-fA-F]+)|#0*([0-9]+)|%@%@*);", OpalXMLNameStartCharsPattern, OpalXMLNameCharsPattern, nil];
 	
@@ -126,7 +130,7 @@ NSString *OpalXMLWhitespacePattern = @"^\\s+";
 
 -(BOOL)isAtStartTag
 {
-	return ![self isAtEndTag] && ![self isAtXMLDeclaration] && [self isAtString:OpalStartTagBeginToken];
+	return [self matchesRegex:OpalStartTagBeginPattern];
 }
 
 - (BOOL)scanStartTagBeginToken

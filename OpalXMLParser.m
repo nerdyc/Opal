@@ -31,7 +31,6 @@
 {
 	NSString *tagName;
 	NSDictionary *attributes;
-	NSString *content;
 	
 	if ([scanner isAtStartTag]) {
 		[scanner scanStartTagBeginToken];
@@ -50,8 +49,11 @@
 		
 		return [OpalXMLEvent endTagEventWithTagName:tagName];
 	} else if ([scanner isAtCharacterData]) {
-		content = [scanner scanCharacterData];
+		NSString *content = [scanner scanCharacterData];
 		return [OpalXMLEvent textEventWithContent:content];
+	} else if ([scanner isAtComment]) {
+		NSString *comment = [scanner scanComment];
+		return [OpalXMLEvent commentEventWithContent:comment];
 	} else if ([scanner isAtXMLDeclaration]) {
 		attributes = [scanner scanXMLDeclaration];
 		NSString *encoding = [attributes objectForKey:@"encoding"];

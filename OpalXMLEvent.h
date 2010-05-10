@@ -56,6 +56,13 @@ typedef enum OpalXMLEventType OpalXMLEventType;
 + (OpalXMLEvent *)textEventWithContent:(NSString *)textContent;
 - (id)initTextEventWithContent:(NSString *)textContent;
 
+// ===== COMMENTS ======================================================================================================
+
++ (OpalXMLEvent *)commentEventWithContent:(NSString *)comment;
+- (id)initCommentEventWithContent:(NSString *)comment;
+
+
+// ===== PROPERTIES ====================================================================================================
 
 @property (readonly) OpalXMLEventType type;
 

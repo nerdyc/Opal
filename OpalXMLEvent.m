@@ -19,6 +19,16 @@
 @synthesize encoding;
 @synthesize standalone;
 
+- (void)dealloc
+{
+	[tagName release];
+	[content release];
+	[attributes release];
+	[version release];
+	[encoding release];
+	[super dealloc];
+}
+
 // ===== START DOCUMENT ================================================================================================
 
 + (OpalXMLEvent *)startDocumentEvent
@@ -107,5 +117,20 @@
 	return self;
 }
 
+// ===== COMMENTS ======================================================================================================
+
++ (OpalXMLEvent *)commentEventWithContent:(NSString *)comment
+{
+	return [[[OpalXMLEvent alloc] initCommentEventWithContent:comment] autorelease];	
+}
+
+- (id)initCommentEventWithContent:(NSString *)comment
+{
+	if (self = [super init]) {
+		type = OPAL_COMMENT_EVENT;
+		content = [comment copy];
+	}
+	return self;
+}
 
 @end
