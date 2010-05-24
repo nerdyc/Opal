@@ -3,11 +3,11 @@
 //  Opal
 //
 //  Created by Christian Niles on 5/8/10.
-//  Copyright 2010 __MyCompanyName__. All rights reserved.
+//  Copyright 2010 Christian Niles. All rights reserved.
 //
 
 #import "OpalXMLEvent.h"
-
+#import "RegexKitLite.h"
 
 @implementation OpalXMLEvent
 
@@ -27,6 +27,19 @@
 	[version release];
 	[encoding release];
 	[super dealloc];
+}
+
+- (BOOL)isContent
+{
+	switch (self.type) {
+		case OPAL_TEXT_EVENT:
+			if ([self isWhitespace]) return NO;
+		case OPAL_START_TAG_EVENT:
+		case OPAL_END_TAG_EVENT:
+			return YES;
+		default:
+			return NO;
+	}
 }
 
 // ===== START DOCUMENT ================================================================================================
@@ -67,6 +80,30 @@
 	return self;
 }
 
+- (BOOL)isStartDocument
+{
+	return self.type == OPAL_START_DOCUMENT_EVENT;
+}
+
+// ===== END DOCUMENT ==================================================================================================
+
++ (OpalXMLEvent *)endDocumentEvent
+{
+	return [[[self alloc] initEndDocumentEvent] autorelease];
+}
+
+- (id)initEndDocumentEvent
+{
+	if (self = [super init]) {
+		type = OPAL_END_DOCUMENT_EVENT;
+	}
+	return self;
+}
+
+- (BOOL)isEndDocument
+{
+	return self.type == OPAL_END_DOCUMENT_EVENT;
+}
 
 // ===== START TAG =====================================================================================================
 
@@ -85,6 +122,20 @@
 	return self;
 }
 
+- (BOOL)isStartTag
+{
+	return self.type == OPAL_START_TAG_EVENT;
+}
+
+- (NSString *)valueForAttribute:(NSString *)attributeName
+{
+	if (attributes) {
+		return [attributes objectForKey:attributeName];
+	} else {
+		return nil;
+	}
+}
+
 // ===== END TAG =======================================================================================================
 
 + (OpalXMLEvent *)endTagEventWithTagName:(NSString *)endTagName
@@ -99,6 +150,11 @@
 		tagName = [endTagName copy];
 	}
 	return self;
+}
+
+- (BOOL)isEndTag
+{
+	return self.type == OPAL_END_TAG_EVENT;
 }
 
 // ===== TEXT ==========================================================================================================
@@ -117,6 +173,16 @@
 	return self;
 }
 
+- (BOOL)isText
+{
+	return self.type == OPAL_TEXT_EVENT;
+}
+
+- (BOOL)isWhitespace
+{
+	return [self isText] && [content isMatchedByRegex:@"^[\\x09\\x0A\\x0D\\x20]*$"];
+}
+
 // ===== COMMENTS ======================================================================================================
 
 + (OpalXMLEvent *)commentEventWithContent:(NSString *)comment
@@ -132,5 +198,11 @@
 	}
 	return self;
 }
+
+- (BOOL)isComment
+{
+	return self.type == OPAL_COMMENT_EVENT;
+}
+
 
 @end

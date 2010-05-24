@@ -3,7 +3,7 @@
 //  Opal
 //
 //  Created by Christian Niles on 5/4/10.
-//  Copyright 2010 __MyCompanyName__. All rights reserved.
+//  Copyright 2010 Christian Niles. All rights reserved.
 //
 
 #import "OpalXMLScanner.h"
@@ -56,6 +56,8 @@ NSString *OpalXMLWhitespacePattern = @"^\\s+";
 {
 	if (self = [super init]) {
 		scanner = [[NSScanner alloc] initWithString:xmlString];
+		// don't skip any characters
+		[scanner setCharactersToBeSkipped:[NSCharacterSet characterSetWithCharactersInString:@""]];
 	}
 	return self;
 }
@@ -378,22 +380,9 @@ NSString *OpalXMLWhitespacePattern = @"^\\s+";
 
 - (NSString *)scanCharacterData
 {
-	NSMutableString *scannedText = [[NSMutableString alloc] initWithString:@""];
-	while (![self isAtEnd] && ![self isAtStartTag] && ![self isAtEndTag]) {
-		NSString *text = [self scanReference];
-		if (text == nil) {
-			[scanner scanUpToCharactersFromSet:OpalXMLSymbolCharacterSet intoString:&scannedText];
-		}
-		
-		// append the result
-		if (text == nil || [text isEqualToString:@""]) {
-			break;
-		} else {
-			[scannedText appendString:text];
-		}
-	}
-	
-	return [scannedText autorelease];
+	NSString *text = nil;
+	[scanner scanUpToCharactersFromSet:OpalXMLSymbolCharacterSet intoString:&text];
+	return text;
 }
 
 #pragma mark Whitespace

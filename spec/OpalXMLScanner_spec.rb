@@ -2,7 +2,7 @@
 # Opal
 #
 # Created by Christian Niles on 5/4/10.
-# Copyright 2010 __MyCompanyName__. All rights reserved.
+# Copyright 2010 Christian Niles. All rights reserved.
 
 
 framework "Opal"
@@ -627,6 +627,39 @@ describe OpalXMLScanner do
   describe ".unescapeValue" do
     it "should escape all character and entity references" do
       OpalXMLScanner.unescapeValue("A &lt;tag&gt; v&#xA;lue&#10;").should.equal("A <tag> v\x0Alue\x0A")
+    end
+  end
+  
+  # ===== CHARACTER DATA ===============================================================================================
+  
+  describe "#isAtCharacterData" do
+    it "should be true when the pointer is before whitespace" do
+      OpalXMLScanner.scannerWithString("  <tag />").isAtCharacterData.should.be.true
+    end
+    
+    it "should be true when the pointer is before text" do
+      OpalXMLScanner.scannerWithString("Four score and seven <strong>years</strong> ago...").isAtCharacterData.should.be.true
+    end
+    
+    it "should not be true when the pointer is before character references" do
+      OpalXMLScanner.scannerWithString("&#x0A;<strong>years</strong>").isAtCharacterData.should.not.be.true
+    end
+    
+    it "should not be true when the pointer is before entity references" do
+      OpalXMLScanner.scannerWithString("&amp;<strong>years</strong>").isAtCharacterData.should.not.be.true
+    end
+    
+    it "should not be true when not in front of character data" do
+      OpalXMLScanner.scannerWithString("<!-- comment --> Text").isAtCharacterData.should.not.be.true
+    end
+  end
+  
+  describe "#scanCharacterData" do
+    before do
+      @scanner = OpalXMLScanner.scannerWithString("\n\t\t  Four score and seven <strong>years</strong> ago...")
+    end
+    it "should scan all text and whitespace up to the next event" do
+      @scanner.scanCharacterData.should.equal("\n\t\t  Four score and seven ")
     end
   end
   
