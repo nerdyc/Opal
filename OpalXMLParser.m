@@ -209,8 +209,8 @@
 		if (theNextEvent != NULL) {
 			*theNextEvent = [OpalXMLEvent endTagEventWithTagName:tagName];
 		}
-	} else if ([scanner isAtCharacterData]) {
-		NSString *content = [scanner scanCharacterData];
+	} else if ([scanner isAtText]) {
+		NSString *content = [scanner scanText];
 		if (theNextEvent != NULL) {
 			*theNextEvent = [OpalXMLEvent textEventWithContent:content];
 		}

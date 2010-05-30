@@ -26,6 +26,22 @@ describe "OpalXMLResourceParser" do
       end
     end
     
+    describe "when provided an untyped resource with text content that contains entities" do
+      before do
+        @xml = <<-XML
+          <name>
+            Tyrannosaurus &quot;Rex&quot;
+          </name>
+        XML
+        
+        @result = OpalXMLResourceParser.parseResourceFromString(@xml)
+      end
+
+      it "should return a string with the entities escaped" do
+        @result.should.be.equal('name' => 'Tyrannosaurus "Rex"')
+      end
+    end
+    
     describe "when provided an untyped resource with element content" do
       before do
         @xml = <<-XML

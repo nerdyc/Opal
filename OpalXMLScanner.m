@@ -224,6 +224,30 @@ NSString *OpalXMLWhitespacePattern = @"^\\s+";
 	return [scanner scanString:OpalTagEndToken intoString:NULL];
 }
 
+#pragma mark Text
+// ===== TEXT ==========================================================================================================
+
+- (BOOL)isAtText
+{
+	return [self isAtCharacterData] || [self isAtReference];
+}
+
+- (NSString *)scanText
+{
+	if (![self isAtText]) return nil;
+	
+	NSMutableString *string = [[[NSMutableString alloc] initWithCapacity:0] autorelease];
+	while (YES) {
+		if ([self isAtReference]) {
+			[string appendString:[self scanReference]];
+		} else if ([self isAtCharacterData]) {
+			[string appendString:[self scanCharacterData]];
+		} else {
+			return string;
+		}
+	};
+}
+
 #pragma mark References
 // ===== REFERENCES ====================================================================================================
 

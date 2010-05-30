@@ -304,6 +304,41 @@ describe OpalXMLScanner do
     end
   end
   
+  # ===== TEXT =========================================================================================================
+  
+  describe "#isText" do
+    
+    it "should be true when at whitespace" do
+      OpalXMLScanner.scannerWithString("  </tag>").isAtText.should.be.true
+    end
+    
+    it "should be true when at a character reference" do
+      OpalXMLScanner.scannerWithString("&#x0a;</tag>").isAtText.should.be.true
+    end
+    
+    it "should be true when at an entity reference" do
+      OpalXMLScanner.scannerWithString("&amp;</tag>").isAtText.should.be.true
+    end
+    
+    it "should be true when at character data" do
+      OpalXMLScanner.scannerWithString("content is here</tag>").isAtText.should.be.true
+    end
+    
+    it "should not be true when at a tag" do
+      OpalXMLScanner.scannerWithString("<tag>sdfsf sdf s</tag>").isAtText.should.be.false
+    end
+
+  end
+  
+  describe "#scanText" do
+    
+    it "should scan all text up to the first non text event" do
+      @scanner = OpalXMLScanner.scannerWithString("   content &apos;is&#x0A;here </tag>")
+      @scanner.scanText.should.equal("   content 'is\nhere ")
+    end
+    
+  end
+  
   # ===== WHITESPACE ===================================================================================================
   
   describe "#isAtWhitespace" do

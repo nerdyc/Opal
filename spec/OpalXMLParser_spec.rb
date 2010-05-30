@@ -116,7 +116,7 @@ describe OpalXMLParser do
     
     describe "when at a text" do
       before do
-        @parser = OpalXMLParser.alloc.initWithString("<content>text la la </content>")
+        @parser = OpalXMLParser.alloc.initWithString("<content>text &quot;la&#x0A; la </content>")
         @parser.nextEvent.type.should.equal(OPAL_START_DOCUMENT_EVENT) # skip start document
         @parser.nextEvent.type.should.equal(OPAL_START_TAG_EVENT) # skip content start tag
 
@@ -127,12 +127,12 @@ describe OpalXMLParser do
         @result.type.should.equal(OPAL_TEXT_EVENT)
       end
       
-      it "should update the parsed content" do
-        @result.content.should == 'text la la '
+      it "should read all text content, including references" do
+        @result.content.should == "text \"la\n la "
       end
       
       it "should advance the scan pointer to the end of the text section" do
-        @parser.characterPosition.should.equal(20)
+        @parser.characterPosition.should.equal(32)
       end
       
       it "should store the result as currentEvent" do
