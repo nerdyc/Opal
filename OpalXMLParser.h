@@ -46,6 +46,7 @@
 
 - (OpalXMLEvent *)nextEvent;
 - (OpalXMLEvent *)nextEventOfType:(OpalXMLEventType)eventType;
+- (BOOL)readNextEventInto:(OpalXMLEvent **)theNextEvent;
 
 - (OpalXMLEvent *)peek;
 - (OpalXMLEvent *)nextContentEvent;

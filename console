@@ -1,7 +1,7 @@
 #!/usr/bin/env macruby
 
 framework "foundation"
-framework "build/Debug/Opal.framework"
+framework "../build/Debug/Opal.framework"
 
 require "irb"
 IRB.start(__FILE__)
