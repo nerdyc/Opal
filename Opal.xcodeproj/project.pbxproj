@@ -13,7 +13,6 @@
 		627912A811909F2000A6719C /* OpalXMLParser.h in Headers */ = {isa = PBXBuildFile; fileRef = 627912A611909F2000A6719C /* OpalXMLParser.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		627912A911909F2000A6719C /* OpalXMLParser.m in Sources */ = {isa = PBXBuildFile; fileRef = 627912A711909F2000A6719C /* OpalXMLParser.m */; };
 		627914951190A06100A6719C /* Opal.h in Headers */ = {isa = PBXBuildFile; fileRef = 627914941190A06100A6719C /* Opal.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		627914B41190AABE00A6719C /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 627914B31190AABE00A6719C /* Cocoa.framework */; };
 		627914C71190AD1000A6719C /* OpalXMLParser_spec.rb in Resources */ = {isa = PBXBuildFile; fileRef = 627914C61190AD1000A6719C /* OpalXMLParser_spec.rb */; };
 		6279153C1190C10100A6719C /* OpalXMLScanner_spec.rb in Resources */ = {isa = PBXBuildFile; fileRef = 6279153B1190C10100A6719C /* OpalXMLScanner_spec.rb */; };
 		627915401190C17B00A6719C /* OpalXMLScanner.h in Headers */ = {isa = PBXBuildFile; fileRef = 6279152F1190C09500A6719C /* OpalXMLScanner.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -49,7 +48,6 @@
 		627914941190A06100A6719C /* Opal.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Opal.h; sourceTree = "<group>"; };
 		627914AC1190AA9000A6719C /* TestOpal.octest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = TestOpal.octest; sourceTree = BUILT_PRODUCTS_DIR; };
 		627914AD1190AA9000A6719C /* TestOpal-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "TestOpal-Info.plist"; sourceTree = "<group>"; };
-		627914B31190AABE00A6719C /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
 		627914C61190AD1000A6719C /* OpalXMLParser_spec.rb */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.ruby; path = OpalXMLParser_spec.rb; sourceTree = "<group>"; };
 		6279152F1190C09500A6719C /* OpalXMLScanner.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OpalXMLScanner.h; sourceTree = "<group>"; };
 		627915301190C09500A6719C /* OpalXMLScanner.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OpalXMLScanner.m; sourceTree = "<group>"; };
@@ -69,7 +67,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				627914B41190AABE00A6719C /* Cocoa.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -103,7 +100,6 @@
 				0867D69AFE84028FC02AAC07 /* External Frameworks and Libraries */,
 				034768DFFF38A50411DB9C8B /* Products */,
 				627914AD1190AA9000A6719C /* TestOpal-Info.plist */,
-				627914B31190AABE00A6719C /* Cocoa.framework */,
 			);
 			name = Opal;
 			sourceTree = "<group>";
@@ -377,6 +373,7 @@
 				GCC_PREFIX_HEADER = Opal_Prefix.pch;
 				INFOPLIST_FILE = Info.plist;
 				INSTALL_PATH = "$(HOME)/Library/Frameworks";
+				LD_DYLIB_INSTALL_NAME = "@rpath/$(EXECUTABLE_PATH)";
 				OTHER_LDFLAGS = "-licucore";
 				PRODUCT_NAME = Opal;
 				WRAPPER_EXTENSION = framework;
@@ -396,6 +393,7 @@
 				GCC_PREFIX_HEADER = Opal_Prefix.pch;
 				INFOPLIST_FILE = Info.plist;
 				INSTALL_PATH = "$(HOME)/Library/Frameworks";
+				LD_DYLIB_INSTALL_NAME = "@rpath/$(EXECUTABLE_PATH)";
 				OTHER_LDFLAGS = "-licucore";
 				PRODUCT_NAME = Opal;
 				WRAPPER_EXTENSION = framework;
