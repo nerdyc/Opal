@@ -18,6 +18,8 @@
 + (id)parseResourceValue:(OpalXMLParser *)parser;
 + (NSNumber *)parseIntegerValue:(OpalXMLParser *)parser;
 + (NSMutableArray *)parseArrayValue:(OpalXMLParser *)parser;
++ (NSDate *)parseDateValue:(OpalXMLParser *)parser;
+
 + (id)parseUntypedValue:(OpalXMLParser *)parser;
 
 @end

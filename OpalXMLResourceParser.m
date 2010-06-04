@@ -12,6 +12,11 @@
 #import "OpalXMLEvent.h"
 #import "RegexKitLite.h"
 
+@interface OpalXMLResourceParser ()
++ (NSDateFormatter *)dateFormatter;
+@end
+
+
 @implementation OpalXMLResourceParser
 
 + (NSDictionary *)parseResourceFromString:(NSString *)resourceXML
@@ -40,6 +45,8 @@
 	NSString *type = [startTag valueForAttribute:@"type"];
 	if (type && [type caseInsensitiveCompare:@"integer"] == NSOrderedSame) {
 		value = [self parseIntegerValue:parser];
+	} else if (type && [type caseInsensitiveCompare:@"datetime"] == NSOrderedSame) {
+		value = [self parseDateValue:parser];
 	} else if (type && [type caseInsensitiveCompare:@"array"] == NSOrderedSame) {
 		value = [self parseArrayValue:parser];
 	} else {
@@ -61,6 +68,23 @@
 	} else {
 		return nil;
 	}
+}
+
++ (NSDate *)parseDateValue:(OpalXMLParser *)parser
+{
+	NSString *content = [parser readElementText];
+	content = [content stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+	// DateFormatter doesn't seem to like 'UTC'
+	content = [content stringByReplacingOccurrencesOfString:@"UTC" withString:@"GMT"];
+	
+	return [[self dateFormatter] dateFromString:content];
+}
+
++ (NSDateFormatter *)dateFormatter
+{
+	NSDateFormatter *formatter = [[[NSDateFormatter alloc] init] autorelease];
+	[formatter setDateFormat:@"yyyy/M/d HH:mm:ss zzz"];
+	return formatter;
 }
 
 + (NSMutableArray *)parseArrayValue:(OpalXMLParser *)parser

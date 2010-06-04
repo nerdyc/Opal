@@ -152,6 +152,24 @@ describe "OpalXMLResourceParser" do
       end
     end
     
+    describe "when provided a 'datetime' resource" do
+      before do
+        @xml = <<-XML
+          <last_activity_at type="datetime">
+            2010/02/10 22:27:54 UTC
+          </last_activity_at>
+        XML
+        
+        @result = OpalXMLResourceParser.parseResourceFromString(@xml)
+      end
+      
+      it "should return a parsed date" do
+        @result.should.be.equal({
+          'last_activity_at' => NSDate.dateWithString("2010-02-10 22:27:54 -0000")
+        })
+      end
+    end
+    
   end
   
 end
