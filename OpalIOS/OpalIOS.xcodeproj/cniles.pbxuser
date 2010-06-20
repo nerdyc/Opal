@@ -1,0 +1,219 @@
+// !$*UTF8*$!
+{
+	0867D690FE84028FC02AAC07 /* Project object */ = {
+		activeBuildConfigurationName = Debug;
+		activeSDKPreference = iphonesimulator3.2;
+		activeTarget = D2AAC07D0554694100DB518D /* OpalIOS */;
+		addToTargets = (
+			D2AAC07D0554694100DB518D /* OpalIOS */,
+		);
+		codeSenseManager = 62BA3FC311CDD4B5005B91F7 /* Code sense */;
+		perUserDictionary = {
+			PBXConfiguration.PBXFileTableDataSource3.PBXFileTableDataSource = {
+				PBXFileTableDataSourceColumnSortingDirectionKey = "-1";
+				PBXFileTableDataSourceColumnSortingKey = PBXFileDataSource_Filename_ColumnID;
+				PBXFileTableDataSourceColumnWidthsKey = (
+					20,
+					341,
+					20,
+					48,
+					43,
+					43,
+					20,
+				);
+				PBXFileTableDataSourceColumnsKey = (
+					PBXFileDataSource_FiletypeID,
+					PBXFileDataSource_Filename_ColumnID,
+					PBXFileDataSource_Built_ColumnID,
+					PBXFileDataSource_ObjectSize_ColumnID,
+					PBXFileDataSource_Errors_ColumnID,
+					PBXFileDataSource_Warnings_ColumnID,
+					PBXFileDataSource_Target_ColumnID,
+				);
+			};
+			PBXConfiguration.PBXTargetDataSource.PBXTargetDataSource = {
+				PBXFileTableDataSourceColumnSortingDirectionKey = "-1";
+				PBXFileTableDataSourceColumnSortingKey = PBXFileDataSource_Filename_ColumnID;
+				PBXFileTableDataSourceColumnWidthsKey = (
+					20,
+					301,
+					60,
+					20,
+					48.16259765625,
+					43,
+					43,
+				);
+				PBXFileTableDataSourceColumnsKey = (
+					PBXFileDataSource_FiletypeID,
+					PBXFileDataSource_Filename_ColumnID,
+					PBXTargetDataSource_PrimaryAttribute,
+					PBXFileDataSource_Built_ColumnID,
+					PBXFileDataSource_ObjectSize_ColumnID,
+					PBXFileDataSource_Errors_ColumnID,
+					PBXFileDataSource_Warnings_ColumnID,
+				);
+			};
+			PBXPerProjectTemplateStateSaveDate = 298706332;
+			PBXWorkspaceStateSaveDate = 298706332;
+		};
+		perUserProjectItems = {
+			62BA3FE211CDD53E005B91F7 /* PBXTextBookmark */ = 62BA3FE211CDD53E005B91F7 /* PBXTextBookmark */;
+			62BA3FE311CDD53E005B91F7 /* PBXTextBookmark */ = 62BA3FE311CDD53E005B91F7 /* PBXTextBookmark */;
+			62BA3FE411CDD53E005B91F7 /* PBXTextBookmark */ = 62BA3FE411CDD53E005B91F7 /* PBXTextBookmark */;
+			62BA3FE511CDD53E005B91F7 /* PBXTextBookmark */ = 62BA3FE511CDD53E005B91F7 /* PBXTextBookmark */;
+			62BA3FE611CDD53E005B91F7 /* PBXTextBookmark */ = 62BA3FE611CDD53E005B91F7 /* PBXTextBookmark */;
+			62BA3FE711CDD53E005B91F7 /* PBXTextBookmark */ = 62BA3FE711CDD53E005B91F7 /* PBXTextBookmark */;
+			62BA3FE911CDD53E005B91F7 /* PBXTextBookmark */ = 62BA3FE911CDD53E005B91F7 /* PBXTextBookmark */;
+			62BA421111CDE9FE005B91F7 /* PBXTextBookmark */ = 62BA421111CDE9FE005B91F7 /* PBXTextBookmark */;
+		};
+		sourceControlManager = 62BA3FC211CDD4B5005B91F7 /* Source Control */;
+		userBuildSettings = {
+		};
+	};
+	62BA3FC211CDD4B5005B91F7 /* Source Control */ = {
+		isa = PBXSourceControlManager;
+		fallbackIsa = XCSourceControlManager;
+		isSCMEnabled = 0;
+		scmConfiguration = {
+			repositoryNamesForRoots = {
+				"" = "";
+			};
+		};
+	};
+	62BA3FC311CDD4B5005B91F7 /* Code sense */ = {
+		isa = PBXCodeSenseManager;
+		indexTemplatePath = "";
+	};
+	62BA3FC411CDD4BC005B91F7 /* OpalXMLEvent.h */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {894, 1248}}";
+			sepNavSelRange = "{0, 0}";
+			sepNavVisRange = "{1341, 793}";
+		};
+	};
+	62BA3FC511CDD4BC005B91F7 /* OpalXMLEvent.m */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {519, 2834}}";
+			sepNavSelRange = "{0, 0}";
+			sepNavVisRange = "{0, 345}";
+		};
+	};
+	62BA3FC611CDD4BC005B91F7 /* OpalXMLParser.h */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {754, 871}}";
+			sepNavSelRange = "{196, 0}";
+			sepNavVisRange = "{23, 316}";
+		};
+	};
+	62BA3FC711CDD4BC005B91F7 /* OpalXMLParser.m */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {852, 3978}}";
+			sepNavSelRange = "{0, 0}";
+			sepNavVisRange = "{0, 322}";
+		};
+	};
+	62BA3FC811CDD4BC005B91F7 /* OpalXMLResourceParser.h */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {519, 338}}";
+			sepNavSelRange = "{0, 0}";
+			sepNavVisRange = "{0, 485}";
+		};
+	};
+	62BA3FC911CDD4BC005B91F7 /* OpalXMLResourceParser.m */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {523, 2067}}";
+			sepNavSelRange = "{0, 0}";
+			sepNavVisRange = "{0, 364}";
+		};
+	};
+	62BA3FCA11CDD4BC005B91F7 /* OpalXMLScanner.h */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {852, 1495}}";
+			sepNavSelRange = "{0, 0}";
+			sepNavVisRange = "{0, 465}";
+		};
+	};
+	62BA3FE211CDD53E005B91F7 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 62BA3FC411CDD4BC005B91F7 /* OpalXMLEvent.h */;
+		name = "OpalXMLEvent.h: 1";
+		rLen = 0;
+		rLoc = 0;
+		rType = 0;
+		vrLen = 793;
+		vrLoc = 1341;
+	};
+	62BA3FE311CDD53E005B91F7 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 62BA3FC511CDD4BC005B91F7 /* OpalXMLEvent.m */;
+		name = "OpalXMLEvent.m: 1";
+		rLen = 0;
+		rLoc = 0;
+		rType = 0;
+		vrLen = 345;
+		vrLoc = 0;
+	};
+	62BA3FE411CDD53E005B91F7 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 62BA3FC611CDD4BC005B91F7 /* OpalXMLParser.h */;
+		name = "OpalXMLParser.h: 10";
+		rLen = 0;
+		rLoc = 196;
+		rType = 0;
+		vrLen = 367;
+		vrLoc = 0;
+	};
+	62BA3FE511CDD53E005B91F7 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 62BA3FC711CDD4BC005B91F7 /* OpalXMLParser.m */;
+		name = "OpalXMLParser.m: 1";
+		rLen = 0;
+		rLoc = 0;
+		rType = 0;
+		vrLen = 322;
+		vrLoc = 0;
+	};
+	62BA3FE611CDD53E005B91F7 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 62BA3FC811CDD4BC005B91F7 /* OpalXMLResourceParser.h */;
+		name = "OpalXMLResourceParser.h: 1";
+		rLen = 0;
+		rLoc = 0;
+		rType = 0;
+		vrLen = 485;
+		vrLoc = 0;
+	};
+	62BA3FE711CDD53E005B91F7 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 62BA3FC911CDD4BC005B91F7 /* OpalXMLResourceParser.m */;
+		name = "OpalXMLResourceParser.m: 1";
+		rLen = 0;
+		rLoc = 0;
+		rType = 0;
+		vrLen = 364;
+		vrLoc = 0;
+	};
+	62BA3FE911CDD53E005B91F7 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 62BA3FCA11CDD4BC005B91F7 /* OpalXMLScanner.h */;
+		name = "OpalXMLScanner.h: 1";
+		rLen = 0;
+		rLoc = 0;
+		rType = 0;
+		vrLen = 465;
+		vrLoc = 0;
+	};
+	62BA421111CDE9FE005B91F7 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 62BA3FCA11CDD4BC005B91F7 /* OpalXMLScanner.h */;
+		name = "OpalXMLScanner.h: 1";
+		rLen = 0;
+		rLoc = 0;
+		rType = 0;
+		vrLen = 465;
+		vrLoc = 0;
+	};
+	D2AAC07D0554694100DB518D /* OpalIOS */ = {
+		activeExec = 0;
+	};
+}

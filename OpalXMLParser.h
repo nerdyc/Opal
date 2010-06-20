@@ -7,7 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
-#import <Opal/OpalXMLEvent.h>
+#import "OpalXMLEvent.h"
 
 @class OpalXMLScanner;
 

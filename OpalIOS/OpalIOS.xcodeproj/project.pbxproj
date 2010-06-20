@@ -1,0 +1,257 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 45;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		62BA3FCE11CDD4BC005B91F7 /* OpalXMLEvent.h in Headers */ = {isa = PBXBuildFile; fileRef = 62BA3FC411CDD4BC005B91F7 /* OpalXMLEvent.h */; };
+		62BA3FCF11CDD4BC005B91F7 /* OpalXMLEvent.m in Sources */ = {isa = PBXBuildFile; fileRef = 62BA3FC511CDD4BC005B91F7 /* OpalXMLEvent.m */; };
+		62BA3FD011CDD4BC005B91F7 /* OpalXMLParser.h in Headers */ = {isa = PBXBuildFile; fileRef = 62BA3FC611CDD4BC005B91F7 /* OpalXMLParser.h */; };
+		62BA3FD111CDD4BC005B91F7 /* OpalXMLParser.m in Sources */ = {isa = PBXBuildFile; fileRef = 62BA3FC711CDD4BC005B91F7 /* OpalXMLParser.m */; };
+		62BA3FD211CDD4BC005B91F7 /* OpalXMLResourceParser.h in Headers */ = {isa = PBXBuildFile; fileRef = 62BA3FC811CDD4BC005B91F7 /* OpalXMLResourceParser.h */; };
+		62BA3FD311CDD4BC005B91F7 /* OpalXMLResourceParser.m in Sources */ = {isa = PBXBuildFile; fileRef = 62BA3FC911CDD4BC005B91F7 /* OpalXMLResourceParser.m */; };
+		62BA3FD411CDD4BC005B91F7 /* OpalXMLScanner.h in Headers */ = {isa = PBXBuildFile; fileRef = 62BA3FCA11CDD4BC005B91F7 /* OpalXMLScanner.h */; };
+		62BA3FD511CDD4BC005B91F7 /* OpalXMLScanner.m in Sources */ = {isa = PBXBuildFile; fileRef = 62BA3FCB11CDD4BC005B91F7 /* OpalXMLScanner.m */; };
+		62BA3FD611CDD4BC005B91F7 /* RegexKitLite.h in Headers */ = {isa = PBXBuildFile; fileRef = 62BA3FCC11CDD4BC005B91F7 /* RegexKitLite.h */; };
+		62BA3FD711CDD4BC005B91F7 /* RegexKitLite.m in Sources */ = {isa = PBXBuildFile; fileRef = 62BA3FCD11CDD4BC005B91F7 /* RegexKitLite.m */; };
+		AA747D9F0F9514B9006C5449 /* OpalIOS_Prefix.pch in Headers */ = {isa = PBXBuildFile; fileRef = AA747D9E0F9514B9006C5449 /* OpalIOS_Prefix.pch */; };
+		AACBBE4A0F95108600F1A2B1 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AACBBE490F95108600F1A2B1 /* Foundation.framework */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		62BA3FC411CDD4BC005B91F7 /* OpalXMLEvent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = OpalXMLEvent.h; path = ../OpalXMLEvent.h; sourceTree = SOURCE_ROOT; };
+		62BA3FC511CDD4BC005B91F7 /* OpalXMLEvent.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = OpalXMLEvent.m; path = ../OpalXMLEvent.m; sourceTree = SOURCE_ROOT; };
+		62BA3FC611CDD4BC005B91F7 /* OpalXMLParser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = OpalXMLParser.h; path = ../OpalXMLParser.h; sourceTree = SOURCE_ROOT; };
+		62BA3FC711CDD4BC005B91F7 /* OpalXMLParser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = OpalXMLParser.m; path = ../OpalXMLParser.m; sourceTree = SOURCE_ROOT; };
+		62BA3FC811CDD4BC005B91F7 /* OpalXMLResourceParser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = OpalXMLResourceParser.h; path = ../OpalXMLResourceParser.h; sourceTree = SOURCE_ROOT; };
+		62BA3FC911CDD4BC005B91F7 /* OpalXMLResourceParser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = OpalXMLResourceParser.m; path = ../OpalXMLResourceParser.m; sourceTree = SOURCE_ROOT; };
+		62BA3FCA11CDD4BC005B91F7 /* OpalXMLScanner.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = OpalXMLScanner.h; path = ../OpalXMLScanner.h; sourceTree = SOURCE_ROOT; };
+		62BA3FCB11CDD4BC005B91F7 /* OpalXMLScanner.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = OpalXMLScanner.m; path = ../OpalXMLScanner.m; sourceTree = SOURCE_ROOT; };
+		62BA3FCC11CDD4BC005B91F7 /* RegexKitLite.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RegexKitLite.h; path = ../RegexKitLite.h; sourceTree = SOURCE_ROOT; };
+		62BA3FCD11CDD4BC005B91F7 /* RegexKitLite.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = RegexKitLite.m; path = ../RegexKitLite.m; sourceTree = SOURCE_ROOT; };
+		AA747D9E0F9514B9006C5449 /* OpalIOS_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OpalIOS_Prefix.pch; sourceTree = SOURCE_ROOT; };
+		AACBBE490F95108600F1A2B1 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
+		D2AAC07E0554694100DB518D /* libOpalIOS.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libOpalIOS.a; sourceTree = BUILT_PRODUCTS_DIR; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		D2AAC07C0554694100DB518D /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				AACBBE4A0F95108600F1A2B1 /* Foundation.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		034768DFFF38A50411DB9C8B /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				D2AAC07E0554694100DB518D /* libOpalIOS.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		0867D691FE84028FC02AAC07 /* OpalIOS */ = {
+			isa = PBXGroup;
+			children = (
+				08FB77AEFE84172EC02AAC07 /* Classes */,
+				32C88DFF0371C24200C91783 /* Other Sources */,
+				0867D69AFE84028FC02AAC07 /* Frameworks */,
+				034768DFFF38A50411DB9C8B /* Products */,
+			);
+			name = OpalIOS;
+			sourceTree = "<group>";
+		};
+		0867D69AFE84028FC02AAC07 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				AACBBE490F95108600F1A2B1 /* Foundation.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		08FB77AEFE84172EC02AAC07 /* Classes */ = {
+			isa = PBXGroup;
+			children = (
+				62BA3FC411CDD4BC005B91F7 /* OpalXMLEvent.h */,
+				62BA3FC511CDD4BC005B91F7 /* OpalXMLEvent.m */,
+				62BA3FC611CDD4BC005B91F7 /* OpalXMLParser.h */,
+				62BA3FC711CDD4BC005B91F7 /* OpalXMLParser.m */,
+				62BA3FC811CDD4BC005B91F7 /* OpalXMLResourceParser.h */,
+				62BA3FC911CDD4BC005B91F7 /* OpalXMLResourceParser.m */,
+				62BA3FCA11CDD4BC005B91F7 /* OpalXMLScanner.h */,
+				62BA3FCB11CDD4BC005B91F7 /* OpalXMLScanner.m */,
+				62BA3FCC11CDD4BC005B91F7 /* RegexKitLite.h */,
+				62BA3FCD11CDD4BC005B91F7 /* RegexKitLite.m */,
+			);
+			name = Classes;
+			sourceTree = "<group>";
+		};
+		32C88DFF0371C24200C91783 /* Other Sources */ = {
+			isa = PBXGroup;
+			children = (
+				AA747D9E0F9514B9006C5449 /* OpalIOS_Prefix.pch */,
+			);
+			name = "Other Sources";
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXHeadersBuildPhase section */
+		D2AAC07A0554694100DB518D /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				AA747D9F0F9514B9006C5449 /* OpalIOS_Prefix.pch in Headers */,
+				62BA3FCE11CDD4BC005B91F7 /* OpalXMLEvent.h in Headers */,
+				62BA3FD011CDD4BC005B91F7 /* OpalXMLParser.h in Headers */,
+				62BA3FD211CDD4BC005B91F7 /* OpalXMLResourceParser.h in Headers */,
+				62BA3FD411CDD4BC005B91F7 /* OpalXMLScanner.h in Headers */,
+				62BA3FD611CDD4BC005B91F7 /* RegexKitLite.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXHeadersBuildPhase section */
+
+/* Begin PBXNativeTarget section */
+		D2AAC07D0554694100DB518D /* OpalIOS */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 1DEB921E08733DC00010E9CD /* Build configuration list for PBXNativeTarget "OpalIOS" */;
+			buildPhases = (
+				D2AAC07A0554694100DB518D /* Headers */,
+				D2AAC07B0554694100DB518D /* Sources */,
+				D2AAC07C0554694100DB518D /* Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = OpalIOS;
+			productName = OpalIOS;
+			productReference = D2AAC07E0554694100DB518D /* libOpalIOS.a */;
+			productType = "com.apple.product-type.library.static";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		0867D690FE84028FC02AAC07 /* Project object */ = {
+			isa = PBXProject;
+			buildConfigurationList = 1DEB922208733DC00010E9CD /* Build configuration list for PBXProject "OpalIOS" */;
+			compatibilityVersion = "Xcode 3.1";
+			hasScannedForEncodings = 1;
+			mainGroup = 0867D691FE84028FC02AAC07 /* OpalIOS */;
+			productRefGroup = 034768DFFF38A50411DB9C8B /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				D2AAC07D0554694100DB518D /* OpalIOS */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXSourcesBuildPhase section */
+		D2AAC07B0554694100DB518D /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				62BA3FCF11CDD4BC005B91F7 /* OpalXMLEvent.m in Sources */,
+				62BA3FD111CDD4BC005B91F7 /* OpalXMLParser.m in Sources */,
+				62BA3FD311CDD4BC005B91F7 /* OpalXMLResourceParser.m in Sources */,
+				62BA3FD511CDD4BC005B91F7 /* OpalXMLScanner.m in Sources */,
+				62BA3FD711CDD4BC005B91F7 /* RegexKitLite.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		1DEB921F08733DC00010E9CD /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+				COPY_PHASE_STRIP = NO;
+				DSTROOT = /tmp/OpalIOS.dst;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_ENABLE_FIX_AND_CONTINUE = YES;
+				GCC_MODEL_TUNING = G5;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = OpalIOS_Prefix.pch;
+				INSTALL_PATH = /usr/local/lib;
+				PRODUCT_NAME = OpalIOS;
+			};
+			name = Debug;
+		};
+		1DEB922008733DC00010E9CD /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+				DSTROOT = /tmp/OpalIOS.dst;
+				GCC_MODEL_TUNING = G5;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = OpalIOS_Prefix.pch;
+				INSTALL_PATH = /usr/local/lib;
+				PRODUCT_NAME = OpalIOS;
+			};
+			name = Release;
+		};
+		1DEB922308733DC00010E9CD /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+				GCC_C_LANGUAGE_STANDARD = c99;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				OTHER_LDFLAGS = "-ObjC";
+				PREBINDING = NO;
+				SDKROOT = iphoneos3.2;
+			};
+			name = Debug;
+		};
+		1DEB922408733DC00010E9CD /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+				GCC_C_LANGUAGE_STANDARD = c99;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				OTHER_LDFLAGS = "-ObjC";
+				PREBINDING = NO;
+				SDKROOT = iphoneos3.2;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		1DEB921E08733DC00010E9CD /* Build configuration list for PBXNativeTarget "OpalIOS" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				1DEB921F08733DC00010E9CD /* Debug */,
+				1DEB922008733DC00010E9CD /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		1DEB922208733DC00010E9CD /* Build configuration list for PBXProject "OpalIOS" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				1DEB922308733DC00010E9CD /* Debug */,
+				1DEB922408733DC00010E9CD /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 0867D690FE84028FC02AAC07 /* Project object */;
+}
