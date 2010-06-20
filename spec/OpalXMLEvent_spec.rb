@@ -1,11 +1,10 @@
+#!/usr/bin/env macruby
 # OpalXMLEvent_spec.rb
 # Opal
 #
 # Created by Christian Niles on 5/23/10.
 # Copyright 2010 Christian Niles. All rights reserved.
-
-
-framework "Opal"
+require File.join(File.dirname(__FILE__), '../spec_helper')
 
 describe "OpalXMLEvent" do
   

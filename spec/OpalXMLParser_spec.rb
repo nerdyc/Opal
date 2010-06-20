@@ -1,10 +1,11 @@
+#!/usr/bin/env macruby
 # opal_xml_parser_spec.rb
 # Opal
 #
 # Created by Christian Niles on 5/4/10.
 # Copyright 2010 Christian Niles. All rights reserved.
 
-framework "Opal"
+require File.join(File.dirname(__FILE__), '../spec_helper')
 
 describe OpalXMLParser do
   
