@@ -73,8 +73,8 @@
 {
 	if (self = [super init]) {
 		type = OPAL_START_DOCUMENT_EVENT;
-		version = xmlVersion;
-		encoding = xmlEncoding;
+		version = [xmlVersion copy];
+		encoding = [xmlEncoding copy];
 		standalone = isStandalone;
 	}
 	return self;
