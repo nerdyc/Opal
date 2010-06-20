@@ -41,7 +41,7 @@
 	OpalXMLEvent *startTag = [parser currentEvent];
 	if (![startTag isStartTag]) return [NSNull null];
 	
-	id value = [NSNull null];
+	id value;
 	NSString *type = [startTag valueForAttribute:@"type"];
 	if (type && [type caseInsensitiveCompare:@"integer"] == NSOrderedSame) {
 		value = [self parseIntegerValue:parser];
