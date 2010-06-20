@@ -52,57 +52,35 @@
 					PBXFileDataSource_Warnings_ColumnID,
 				);
 			};
-			PBXPerProjectTemplateStateSaveDate = 298749859;
-			PBXWorkspaceStateSaveDate = 298749859;
+			PBXPerProjectTemplateStateSaveDate = 298751319;
+			PBXWorkspaceStateSaveDate = 298751319;
 		};
 		perUserProjectItems = {
-			629646FF11CE9102005032A3 /* PBXTextBookmark */ = 629646FF11CE9102005032A3 /* PBXTextBookmark */;
-			6296470011CE9102005032A3 /* PBXTextBookmark */ = 6296470011CE9102005032A3 /* PBXTextBookmark */;
-			6296470911CE9125005032A3 /* PBXTextBookmark */ = 6296470911CE9125005032A3 /* PBXTextBookmark */;
-			6296472511CE92EB005032A3 /* PBXTextBookmark */ = 6296472511CE92EB005032A3 /* PBXTextBookmark */;
+			6296475E11CE94A9005032A3 /* PBXTextBookmark */ = 6296475E11CE94A9005032A3 /* PBXTextBookmark */;
+			6296477711CE9564005032A3 /* PBXTextBookmark */ = 6296477711CE9564005032A3 /* PBXTextBookmark */;
 		};
 		sourceControlManager = 62BA3F5611CDD179005B91F7 /* Source Control */;
 		userBuildSettings = {
 		};
 	};
-	629646FF11CE9102005032A3 /* PBXTextBookmark */ = {
+	6296475E11CE94A9005032A3 /* PBXTextBookmark */ = {
 		isa = PBXTextBookmark;
 		fRef = 62BA3F5811CDD210005B91F7 /* OpalXMLEvent.h */;
 		name = "OpalXMLEvent.h: 1";
 		rLen = 0;
 		rLoc = 0;
 		rType = 0;
-		vrLen = 368;
+		vrLen = 347;
 		vrLoc = 0;
 	};
-	6296470011CE9102005032A3 /* PBXTextBookmark */ = {
+	6296477711CE9564005032A3 /* PBXTextBookmark */ = {
 		isa = PBXTextBookmark;
 		fRef = 62BA3F5811CDD210005B91F7 /* OpalXMLEvent.h */;
 		name = "OpalXMLEvent.h: 1";
 		rLen = 0;
 		rLoc = 0;
 		rType = 0;
-		vrLen = 368;
-		vrLoc = 0;
-	};
-	6296470911CE9125005032A3 /* PBXTextBookmark */ = {
-		isa = PBXTextBookmark;
-		fRef = 62BA3F5811CDD210005B91F7 /* OpalXMLEvent.h */;
-		name = "OpalXMLEvent.h: 1";
-		rLen = 0;
-		rLoc = 0;
-		rType = 0;
-		vrLen = 368;
-		vrLoc = 0;
-	};
-	6296472511CE92EB005032A3 /* PBXTextBookmark */ = {
-		isa = PBXTextBookmark;
-		fRef = 62BA3F5811CDD210005B91F7 /* OpalXMLEvent.h */;
-		name = "OpalXMLEvent.h: 1";
-		rLen = 0;
-		rLoc = 0;
-		rType = 0;
-		vrLen = 368;
+		vrLen = 347;
 		vrLoc = 0;
 	};
 	62BA3F5611CDD179005B91F7 /* Source Control */ = {
@@ -121,9 +99,9 @@
 	};
 	62BA3F5811CDD210005B91F7 /* OpalXMLEvent.h */ = {
 		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {425, 1378}}";
+			sepNavIntBoundsRect = "{{0, 0}, {425, 1339}}";
 			sepNavSelRange = "{0, 0}";
-			sepNavVisRange = "{0, 368}";
+			sepNavVisRange = "{0, 347}";
 		};
 	};
 	8DC2EF4F0486A6940098B216 /* Opal */ = {
