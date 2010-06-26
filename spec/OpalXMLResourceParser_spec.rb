@@ -173,4 +173,55 @@ describe "OpalXMLResourceParser" do
     
   end
   
+  describe ".writeResource:toXMLString:" do
+    describe "when provided a string" do
+      it "should write the encoded string to the xmlString" do
+        xmlString = ""
+        OpalXMLResourceParser.writeResource("<this>&<that>", toXMLString:xmlString)
+        xmlString.should.equal("&lt;this>&amp;&lt;that>")
+      end
+    end
+    
+    describe "when provided an NSDictionary" do
+      it "should write the dictionary to the xmlString" do
+        xmlString = ""
+        OpalXMLResourceParser.writeResource({name:"value"}, toXMLString:xmlString)
+        xmlString.should.equal("<name>value</name>")
+      end
+    end
+    
+    describe "when provided an NSArray" do
+      it "should write each member to the xmlString" do
+        xmlString = ""
+        OpalXMLResourceParser.writeResource([{name:"value"}, "text", 1, {:label => "labelV"}], toXMLString:xmlString)
+        xmlString.should.equal("<name>value</name>text1<label>labelV</label>")
+      end
+    end
+  end
+  
+  describe ".writeResourceData:toXMLString:" do
+    before do
+      @resourceData = {
+        "story" => {
+          "id" => 2,
+          "name" => "Blah <blah> & BLAH.",
+          :date => NSDate.dateWithString("2010-01-02 03:45:00 -0800")
+        }
+      }
+      
+      @xmlString = ""
+      OpalXMLResourceParser.writeResourceData(@resourceData, toXMLString:@xmlString)
+    end
+    
+    it "should encode the data in XML" do
+      @xmlString.should.equal([
+          "<story>",
+            "<id type='integer'>2</id>",
+            "<name>Blah &lt;blah> &amp; BLAH.</name>",
+            "<date type='datetime'>2010-01-02 03:45:00 -0800</date>",
+          "</story>"
+        ].join(""))
+    end
+  end
+  
 end

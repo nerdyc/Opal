@@ -22,4 +22,12 @@
 
 + (id)parseUntypedValue:(OpalXMLParser *)parser;
 
++ (void)writeResource:(id)resource
+          toXMLString:(NSMutableString *)xmlString;
+
++ (void)writeResourceData:(NSDictionary *)resourceData
+              toXMLString:(NSMutableString *)xmlString;
+              
++ (void)writeResources:(NSEnumerator *)resourceEnumerator
+           toXMLString:(NSMutableString *)xmlString;
 @end

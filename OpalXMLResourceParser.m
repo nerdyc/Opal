@@ -147,4 +147,72 @@
 	}
 }
 
+#pragma mark -
+#pragma mark XML Serialization
+
++ (void)writeResource:(id)resource
+          toXMLString:(NSMutableString *)xmlString
+{
+  if (resource == nil || resource == [NSNull null]) { return; }
+  
+  if ([resource isKindOfClass:[NSString class]]) {
+    [xmlString appendString:[OpalXMLScanner escapeString:resource]];
+  } else if ([resource isKindOfClass:[NSDictionary class]]) {
+    [self writeResourceData:(NSDictionary *)resource 
+                toXMLString:xmlString];
+  } else if ([resource isKindOfClass:[NSArray class]]) {
+    [self writeResources:[(NSArray *)resource objectEnumerator]
+             toXMLString:xmlString];
+  } else if ([resource respondsToSelector:@selector(stringValue)]) {
+    [xmlString appendString:[resource stringValue]];
+  } else {
+    [xmlString appendString:[OpalXMLScanner escapeString:[resource description]]];
+  }
+}
+
++ (void)writeResourceData:(NSDictionary *)resourceData
+              toXMLString:(NSMutableString *)xmlString
+{
+  NSEnumerator *keyEnumerator = [resourceData keyEnumerator];
+  for (NSString *key in keyEnumerator) {
+    id resourceValue = [resourceData objectForKey:key];
+    
+    NSString *typeString = nil;
+    if ([resourceValue isKindOfClass:[NSArray class]]) {
+      typeString = @"array";
+    } else if ([resourceValue isKindOfClass:[NSDate class]]) {
+      typeString = @"datetime";
+    } else if ([resourceValue isKindOfClass:[NSNumber class]]) {
+      NSNumber *number = resourceValue;
+      const char *valueType = [number objCType];
+      switch (*valueType) {
+        case 'f':
+        case 'd':
+          typeString = @"float";
+          break;
+        default:
+          typeString = @"integer";
+          break;
+      }
+    }
+    
+    if (typeString) {
+      [xmlString appendFormat:@"<%@ type='%@'>", key, typeString];
+    } else {
+      [xmlString appendFormat:@"<%@>", key];
+    }
+    
+    [self writeResource:resourceValue toXMLString:xmlString];
+    [xmlString appendFormat:@"</%@>", key];
+  }
+}
+
++ (void)writeResources:(NSEnumerator *)resourceEnumerator
+           toXMLString:(NSMutableString *)xmlString
+{
+  for (id resource in resourceEnumerator) {
+    [self writeResource:resource toXMLString:xmlString];
+  }
+}
+
 @end

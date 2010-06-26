@@ -77,6 +77,9 @@
 + (NSString *)unescapeDecimalString:(NSString *)decimalString;
 + (NSString *)translateEntityReference:(NSString *)entityRef;
 
++ (NSString *)escapeString:(NSString *)string;
++ (void)escapeStringInline:(NSMutableString *)mutableString;
+
 // ===== CHARACTER DATA ================================================================================================
 
 - (BOOL)isAtCharacterData;

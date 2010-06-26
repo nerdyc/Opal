@@ -665,6 +665,12 @@ describe OpalXMLScanner do
     end
   end
   
+  describe ".escapeString" do
+    it "should escape & and < characters" do
+      OpalXMLScanner.escapeString("<this>&<that>").should.equal("&lt;this>&amp;&lt;that>")
+    end
+  end
+  
   # ===== CHARACTER DATA ===============================================================================================
   
   describe "#isAtCharacterData" do

@@ -410,6 +410,35 @@ NSString *OpalXMLWhitespacePattern = @"^\\s+";
   }
 }
 
++ (NSString *)escapeString:(NSString *)string
+{
+  if (string == nil) return nil;
+  
+  NSCharacterSet *xmlControlSet = [NSCharacterSet characterSetWithCharactersInString:@"&<"];
+  NSRange foundRange = [string rangeOfCharacterFromSet:xmlControlSet];
+  if (foundRange.location == NSNotFound) {
+    return string;
+  } else {
+    NSMutableString *mutableString = [NSMutableString stringWithString:string];
+    [self escapeStringInline:mutableString];
+    return mutableString;
+  }
+}
+
++ (void)escapeStringInline:(NSMutableString *)mutableString
+{
+  [mutableString replaceOccurrencesOfString:@"&"
+                                 withString:@"&amp;"
+                                    options:NSLiteralSearch
+                                      range:NSMakeRange(0, [mutableString length])];
+  
+  
+  [mutableString replaceOccurrencesOfString:@"<"
+                                 withString:@"&lt;"
+                                    options:NSLiteralSearch
+                                      range:NSMakeRange(0, [mutableString length])];
+}
+
 #pragma mark Entity References
 // ----- ENTITY REFERENCES ---------------------------------------------------------------------------------------------
 
